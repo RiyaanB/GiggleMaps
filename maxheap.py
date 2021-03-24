@@ -1,10 +1,11 @@
 class MaxHeap:
-	self.m_heap = []
+	def __init__(self):
+		self.m_heap = []
 
-	def print_heap():
+	def print_heap(self):
 		print(m_heap)
 
-	def insert(n):
+	def insert(self, n):
 		pos = len(m_heap)
 		m_heap.append(n)
 		if length == 0:
@@ -13,7 +14,7 @@ class MaxHeap:
 			swap(pos, (pos-1)/2)
 
 
-	def extract():
+	def extract(self):
 		length = len(m_heap)
 		if length == 0:
 			return None
@@ -27,7 +28,7 @@ class MaxHeap:
 		return temp
 
 
-	def relocate_top(length):
+	def relocate_top(self, length):
 		current = 0
 		swap_pos = current
 		while (current < length):
@@ -39,28 +40,28 @@ class MaxHeap:
 					swap_pos = comp(left, right)
 				elif (m_heap[left] > m_heap[current]):
 					swap_pos = left
-				else
+				else:
 					swap_pos = right
 			elif (left < length and m_heap[left] > m_heap[current]):
 				swap_pos = left
 			elif (right < length and m_heap[right] > m_heap[current]):
 				swap_pos = right
-			if (current == swap_pos)
+			if (current == swap_pos):
 				return
 			swap(current, swap_pos)
 			current = swap_pos
 
-	def comp(a, b):
+	def comp(self, a, b):
 		return a if m_heap[a] > m_heap[b] else b
 
 
-	def swap(a, b):
+	def swap(self, a, b):
 		temp = m_heap[a]
 		m_heap[a] = m_heap[b]
 		m_heap[b] = temp
 
 
-main():
+def main():
 	a = MaxHeap()
 	for i in range(0, 10):
 		a.insert(i)
