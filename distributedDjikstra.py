@@ -22,10 +22,10 @@ def main():
 				route = dijkstra(person.current_pos, end)
 				next_pos = route[0]
 				if not person.current_pos==start:
-					graph.update_cost(prev_pos, person.current_pos, value=-1) # reduces cost of the edge the person is no longer on
+					graph.update_cost(person.prev_pos, person.current_pos, value=-1) # reduces cost of the edge the person is no longer on
 
 				graph.update_cost(person.current_pos, next_pos, value=1) # increases cost of the edge on which person travels
-				prev_pos = person.current_pos
+				person.prev_pos = person.current_pos
 				person.move(next_pos)
 
 			else:
@@ -38,6 +38,7 @@ class Person:
 		
 		self.start = start
 		self.end = end
+		self.prev_pos = None
 
 		self.route_taken = [self.start]
 
