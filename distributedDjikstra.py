@@ -10,20 +10,15 @@ import csv
 def main():
 	graph = Graph()
 
-	people = 3
-
-	start = 'A'
-	end = 'F'
-
 	with open('start_end.txt') as f:
 		people = [Person(row[0], row[1]) for row in csv.reader(f)]
 
 	while people:
 		for person in people:
 			if not person.reached():
-				route = dijkstra(person.current_pos, end)
+				route = dijkstra(person.current_pos, person.end)
 				next_pos = route[0]
-				if not person.current_pos==start:
+				if not person.current_pos == person.start:
 					graph.update_cost(person.prev_pos, person.current_pos, value=-1) # reduces cost of the edge the person is no longer on
 
 				graph.update_cost(person.current_pos, next_pos, value=1) # increases cost of the edge on which person travels
