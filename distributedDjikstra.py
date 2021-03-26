@@ -83,6 +83,8 @@ def dijkstra(start, end):
 			dijkstra by only recalculating wrt
 			the edge whose cost has changed
 	'''
+	
+	# TODO: write this damn function
 
 	pass
 
