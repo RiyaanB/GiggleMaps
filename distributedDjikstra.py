@@ -5,6 +5,7 @@
 
 
 from collections import defaultdict
+import csv
 
 def main():
 	graph = Graph()
@@ -14,7 +15,8 @@ def main():
 	start = 'A'
 	end = 'F'
 
-	people = [Person(start, end) for i in range(people)] #Change range value to change number of ppl
+	with open('start_end.txt') as f:
+		people = [Person(row[0], row[1]) for row in csv.reader(f)]
 
 	while people:
 		for person in people:
@@ -88,3 +90,6 @@ def dijkstra(start, end):
 	'''
 
 	pass
+
+if __name__ == '__main__':
+	main()
