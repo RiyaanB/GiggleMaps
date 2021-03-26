@@ -4,7 +4,9 @@
 def main():
 	graph = Graph()
 
-	people = [Person() for i in range(3)] #Change range value to change number of ppl
+	people = 3
+
+	people = [Person() for i in range(people)] #Change range value to change number of ppl
 	start = 'A'
 	end = 'F'
 
@@ -23,8 +25,11 @@ class Person:
 	# I think you should add 2 arguments - Start and end here and then note those values
 	def __init__(self):
 		self.current_pos = None
-		self.route_taken = []
-		first_move = True
+		
+		self.start = None
+		self.end = None
+
+		self.route_taken = [self.start]
 
 	def reached(self, end):
 		return self.current_pos==end
@@ -35,9 +40,6 @@ class Person:
 		of the person and will also append this 
 		new position to self.route_taken
 		'''
-		if self.first_move:
-			self.route_taken.append(self.current_pos)
-			self.first_move = False
 
 		self.current_pos = pos
 		self.route_taken.append(self.current_pos)
