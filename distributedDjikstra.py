@@ -1,6 +1,26 @@
 # PSEUDOCODE:
 
+
+def main():
+	graph = Graph()
+
+	people = [Person() for i in range(3)] #Change range value to change number of ppl
+	start = 'A'
+	end = 'F'
+
+	while people:
+		for person in people:
+			if not person.reached(end):
+				route = dijkstra(person.current_pos, end)
+				next_pos = route[0]
+				graph.update_cost(person.current_pos, next_pos) # increases cost of the edge on which person travels
+				person.move(next_pos)
+
+			else:
+				people.remove(person)
+
 class Person:
+	# I think you should add 2 arguments - Start and end here and then note those values
 	def __init__(self):
 		self.current_pos = None
 		self.route_taken = []
@@ -15,9 +35,9 @@ class Person:
 		of the person and will also append this 
 		new position to self.route_taken
 		'''
-		if first_move:
+		if self.first_move:
 			self.route_taken.append(self.current_pos)
-			first_move = False
+			self.first_move = False
 
 		self.current_pos = pos
 		self.route_taken.append(self.current_pos)
@@ -43,31 +63,3 @@ def dijkstra(start, end):
 	'''
 
 	pass
-
-person1 = Person()
-person2 = Person()
-person3 = Person()
-
-graph = Graph()
-
-people = [person1, person2, person3]  # list of person objects
-
-start = 'A'
-end = 'F'
-
-while people:
-	for person in people:
-		if not person.reached(end):
-			route = dijkstra(person.current_pos, end)
-			next_pos = route[0]
-			graph.update_cost(person.current_pos, next_pos) # increases cost of the edge on which person travels
-			person.move(next_pos)
-
-		else:
-			people.remove(person)
-
-
-
-
-
-
