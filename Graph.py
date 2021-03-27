@@ -12,6 +12,7 @@ class Graph:
         self.names = []
         self.time_taken = defaultdict(lambda: 0)
 
+
         with open(filename) as f:
             for line in f:
                 from_node, to_node, cost, *_ = line.strip().split(" ")
@@ -45,7 +46,6 @@ class Graph:
 
         self.edges[initial][final] += value if value > 1 else 1
         self.edges[final][initial] += value if value > 1 else 1
-        pass
 
     def update_positions(self, initial, final, remove=False):
         if not remove:
@@ -55,11 +55,20 @@ class Graph:
             self.people_positions[(initial,final)] -= 1
             self.people_positions[(final,initial)] -= 1
 
-    def addPeople(self, people_filename):
+    def add_people(self, people_filename):
         with open(people_filename) as f:
             for line in f:
                 from_node, to_node, *_ = line.strip().split(" ")
                 self.people.append(Person(from_node, to_node))
+
+    def add_node(self, initial, final, cost=1):
+        self.nodes.add(initial)
+        self.nodes.add(final)
+
+        self.edges[from_node][to_node] = cost
+        self.edges[to_node][from_node] = cost
+
+        pass
 
 
 if __name__ == "__main__":
