@@ -8,18 +8,9 @@ import time
 from plot_graph import plot_graph
 
 
-graph = Graph('graph.txt')
-
-people = 3
-
-with open('start_end.txt') as f:
-	people = [Person(row[0], row[1], row[2]) for row in csv.reader(f)]
-
-
 def main(graph: Graph, people: list):
 
 	time_taken = 0
-	reached = []
 	tot=0
 
 	while tot<len(people):
@@ -46,31 +37,24 @@ def main(graph: Graph, people: list):
 
 				graph.time_taken[(person.prev_pos, person.current_pos)] += 1
 
-				print(person.path[-2:])
+				# print(person.path[-2:])
 
 			elif person.already_reached:
 				pass
+
 			else:
-				print(f"PERSON {person.name} REACHED, PATH:", person.path)
-				reached.append(person)
+				# print(f"PERSON {person.name} REACHED, PATH:", person.path)
 				person.already_reached = True
 				tot+=1	
 
 		try:
-			print(graph.time_taken.values())
 			time = max(graph.time_taken.values())
-			print(f"Time Taken: {time}\n----------")
 			time_taken += time
-		except:
+		except ValueError:
 			pass
 
-			# take max people at an edge and use that for time taken
-		
-		# plot_graph(graph)
-		# time_taken += max(graph.time_taken.values())
-	
-	print(time_taken)
-	print([person.path for person in everyone])
+
+	return time_taken, [person.path for person in people]
 
 
 class SpecialMinHeap(Heap):
@@ -122,29 +106,16 @@ def dijkstra(graph, start, end):
 
 
 if __name__ == '__main__':
-    start = time.time()
-    main()
-    end = time.time()
-    print(end - start)
 
-'''
-{
-'1': {'2': 1, '5': 1, '6': 1}, 
-'2': {'1': 1, '3': 1, '4': 1, '7': 1}, 
-'3': {'2': 1, '4': 1, '6': 1}, 
-'4': {'3': 1, '5': 1, '2': 1, '7': 1}, 
-'5': {'4': 1, '1': 1, '6': 1}, 
-'6': {'1': 1, '3': 1, '5': 1}, 
-'7': {'2': 1, '4': 1}
-}
-'''
+	graph = Graph('graph.txt')
 
-'''
-{'1': {'2': 3, '5': 1, '6': 3},
-'2': {'1': 3, '3': 1, '4': 1, '7': 1}, 
-'3': {'2': 1, '4': 1, '6': 1}, 
-'4': {'3': 1, '5': 1, '2': 1, '7': 1}, 
-'5': {'4': 1, '1': 1, '6': 1}, 
-'6': {'1': 3, '3': 1, '5': 1}, 
-'7': {'2': 1, '4': 1}}
-'''
+	people = 3
+
+	with open('start_end.txt') as f:
+		people = [Person(row[0], row[1], row[2]) for row in csv.reader(f)]
+
+	start = time.time()
+	print(main(graph, people))
+	end = time.time()
+	
+	print(end - start)
