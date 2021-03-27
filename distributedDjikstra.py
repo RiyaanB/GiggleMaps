@@ -10,12 +10,14 @@ from heap import Heap
 import numpy as np
 from Graph import Graph
 from Person import Person
+import time
 
 def main():
-	graph = Graph('graph.txt')
+    graph = Graph('graph.txt')
 
-	people = 3
+    people = 3
 
+<<<<<<< HEAD
 	with open('start_end.txt') as f:
 		everyone = [Person(row[0], row[1]) for row in csv.reader(f)]
 
@@ -68,59 +70,89 @@ def main():
 	print(time_taken)
 	print(step)
 	print([person.path for person in everyone])
+=======
+    with open('start_end.txt') as f:
+        people = [Person(row[0], row[1]) for row in csv.reader(f)]
+
+    while people:
+        for person in people:
+            if not person.reached():
+                route = dijkstra(graph, person.current_pos, person.end)
+                next_pos = route[1][0]
+                # print(next_pos)
+                if not person.current_pos == person.start:
+                    graph.update_cost(person.prev_pos, person.current_pos, value=-1)
+                    graph.update_positions(person.prev_pos, person.current_pos, remove=True)
+                    # reduces cost of the edge the person is no longer on
+
+                graph.update_cost(person.current_pos, next_pos, value=1) # increases cost of the edge on which person travels
+                person.prev_pos = person.current_pos
+                person.move(next_pos)
+                person.path.append(next_pos)
+
+                graph.update_positions(person.prev_pos, person.current_pos)
+
+                # print(graph.people_positions)
+            else:
+                people.remove(person)
+
+            # take max people at an edge and use that for time taken
+>>>>>>> d559d1591162124bd1d521dc5f7b09d884fdc9d6
 
 
 class SpecialMinHeap(Heap):
-	def greater(self, a, b):
-		return a if self.m_heap[a]['distance'] < self.m_heap[b]['distance'] else b
-	
-	
+    def greater(self, a, b):
+        return a if self.m_heap[a]['distance'] < self.m_heap[b]['distance'] else b
+
+
 def dijkstra(graph, start, end):
-	'''
-	This function returns a tuple of least distance and the best path to be taken from start + 1 to end
-	TODO: figure out optimum way to recalculate
-			dijkstra by only recalculating wrt
-			the edge whose cost has changed
-	'''
+    '''
+    This function returns a tuple of least distance and the best path to be taken from start + 1 to end
+    TODO: figure out optimum way to recalculate
+            dijkstra by only recalculating wrt
+            the edge whose cost has changed
+    '''
 
-	nodes = {node: {'distance': (0 if node == start else np.inf), 'path_via': None, 'done': False, 'name': node} for node in graph.nodes}
-	
-	pq = SpecialMinHeap()
-	pq.push(nodes[start])
-	
-	while not pq.empty():
-		current_master_node = pq.pop()
+    nodes = {node: {'distance': (0 if node == start else np.inf), 'path_via': None, 'done': False, 'name': node} for node in graph.nodes}
 
-		if current_master_node['name'] == end:
-			route = [end]
-			path_via = end
+    pq = SpecialMinHeap()
+    pq.push(nodes[start])
 
-			while path_via != start:
-				route.append(nodes[path_via]['path_via'])
-				path_via = route[-1]
+    while not pq.empty():
+        current_master_node = pq.pop()
 
-			return (nodes[end]['distance'], route[-2::-1])
+        if current_master_node['name'] == end:
+            route = [end]
+            path_via = end
 
-		if current_master_node['done']:
-			continue
+            while path_via != start:
+                route.append(nodes[path_via]['path_via'])
+                path_via = route[-1]
 
-		for adj_node, distance in graph.edges[current_master_node['name']].items():
-			if not nodes[adj_node]['done']:
-				distance += current_master_node['distance']
+            return (nodes[end]['distance'], route[-2::-1])
 
-				if nodes[adj_node]['distance'] > distance:
-					nodes[adj_node]['distance'] = distance
-					nodes[adj_node]['path_via'] = current_master_node['name'] 
-					pq.push(nodes[adj_node]) 
+        if current_master_node['done']:
+            continue
 
-		current_master_node['done'] = True
+        for adj_node, distance in graph.edges[current_master_node['name']].items():
+            if not nodes[adj_node]['done']:
+                distance += current_master_node['distance']
 
-	raise RuntimeError('End point not found')
+                if nodes[adj_node]['distance'] > distance:
+                    nodes[adj_node]['distance'] = distance
+                    nodes[adj_node]['path_via'] = current_master_node['name']
+                    pq.push(nodes[adj_node])
+
+        current_master_node['done'] = True
+
+    raise RuntimeError('End point not found')
 
 
 if __name__ == '__main__':
-	main()
-
+    start = time.time()
+    main()
+    end = time.time()
+    print(end - start)
 
 '''
 {
