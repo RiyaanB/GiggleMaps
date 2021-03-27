@@ -14,8 +14,6 @@ from Person import Person
 def main():
 	graph = Graph('graph.txt')
 
-	print(dijkstra(graph, '1', '7'))
-	exit()
 	people = 3
 
 	with open('start_end.txt') as f:
@@ -69,7 +67,7 @@ def dijkstra(graph, start, end):
 			if not nodes[adj_node]['done']:
 				distance += current_master_node['distance']
 
-				if nodes[adj_node]['distance'] > distance: # What about ==
+				if nodes[adj_node]['distance'] > distance:
 					nodes[adj_node]['distance'] = distance
 					nodes[adj_node]['path_via'] = current_master_node['name'] 
 					pq.push(nodes[adj_node]) 
