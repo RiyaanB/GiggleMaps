@@ -6,9 +6,11 @@
 
 from collections import defaultdict
 import csv
+from heap import MinHeap
+import numpy as np
 
 def main():
-	graph = Graph()
+	graph = Graph('graph.txt')
 
 	with open('start_end.txt') as f:
 		people = [Person(row[0], row[1]) for row in csv.reader(f)]
@@ -73,8 +75,7 @@ class Graph:
 		self.edges[final][initial] += value
 		pass
 
-
-def dijkstra(start, end):
+def dijkstra(graph, start, end):
 	'''
 	This function returns an array of the best 
 	path to be taken from start to end
@@ -85,8 +86,40 @@ def dijkstra(start, end):
 	'''
 	
 	# TODO: write this damn function
+	nodes = {node: {'distance': (0 if node == start else np.inf), 'path_via': None, 'done': False} for node in graph.nodes}
+	
+	pq = MinHeap()
+	pq.insert(nodes[start])
+	
+	while True:
+		current_master_node = pq.extract()
 
-	pass
+		if current_master_node == end:
+			break
+		if nodes[current_master_node]['done']:
+			continue
+
+		for adj_node, distance in graph.edges[start].items():
+			if not nodes[adj_node]['done']:
+				distance += current_master_node['distance']
+
+				if nodes[adj_node]['distance'] > distance: # What about ==
+					nodes[adj_node]['distance'] = distance
+					nodes[adj_node]['path_via'] = current_master_node
+					pq.insert(nodes[adj_node]) #pass by reference, pass by value
+
+		nodes[current_master_node]['done'] = True
+
+	route = [end]
+	path_via = nodes[end]['path_via']
+
+	while path_via != start:
+		route.append(nodes[path_via]['path_via'])
+		path_via = route[-1]
+
+	return reversed(route)
+
+
 
 if __name__ == '__main__':
 	main()
