@@ -2,43 +2,79 @@ from collections import defaultdict
 import numpy as np
 import heapq
 
-class Graph:
-	def __init__(self, filename):
-		self.nodes = set()
-		self.edges = defaultdict(dict)
 
-		with open(filename) as f:
-			for line in f:
-				from_node, to_node, cost, *_ = line.strip().split(" ")
-				cost = int(cost)
-				self.edges[from_node][to_node] = cost
-				self.edges[to_node][from_node] = cost
-				self.nodes.add(from_node)
-				self.nodes.add(to_node)
+class Person:
+    def __init__(self, start_node, end_node):
+        self.nodes_visited = set()
+        self.nodes_visited.add(start_node)
+        self.prev_node = start_node
+        self.path = []
+        self.next_node = ""
+
+    def set_path(self, ls):
+        self.path = ls
+        self.next_node = self.path[0]
+
+    def get_next_node(self):
+        return self.path.pop(0) if self.path else ""
+
+
+
+class Graph:
+    def __init__(self, filename, people_filename):
+        self.nodes = set()
+        self.edges = defaultdict(dict)
+
+        with open(filename) as f:
+            for line in f:
+                from_node, to_node, cost, *_ = line.strip().split(" ")
+                self.edges[from_node][to_node] = int(cost)
+                self.nodes.add(from_node)
+                self.nodes.add(to_node)
+
+        self.names = sorted(self.nodes)
+        array = []
+        for from_node, to_node in sorted(self.edges.items()):
+            row = []
+            for name in self.names:
+                try:
+                    row.append(to_node[name])
+                except KeyError:
+                    row.append(0)
+            array.append(row)
+        self.array = np.array(array)
+
+        self.people = []
+        with open(people_filename) as f:
+            for line in f:
+                from_node, to_node, *_ = line.strip().split(" ")
+                self.people.append(Person(from_node, to_node))
+
 
 
 def dijkstras_algo(graph, start):
-	dists = {node: (0 if node==start else np.inf) for node in graph.nodes}
-	priority_queue = [(0, start)]
+    dists = {node: (0 if node==start else np.inf) for node in graph.nodes}
+    priority_queue = [(0, start)]
 
-	while priority_queue:
-		current_dist, current_node = heapq.heappop(priority_queue)
+    while priority_queue:
+        current_dist, current_node = heapq.heappop(priority_queue)
 
-		if current_dist > dists[current_node]:
-			continue
+        if current_dist > dists[current_node]:
+            continue
 
-		for adj_node, cost in graph.edges[current_node].items():
-			dist = current_dist + cost
+        for adj_node, cost in graph.edges[current_node].items():
+            dist = current_dist + cost
 
-			if dist < dists[adj_node]:
-				dists[adj_node] = dist
-				heapq.heappush(priority_queue, (dist, adj_node))
+            if dist < dists[adj_node]:
+                dists[adj_node] = dist
+                heapq.heappush(priority_queue, (dist, adj_node))
 
-	return dists
+    return dists
 
 
-graph = Graph('graph.txt')
-print(dijkstras_algo(graph, 'A'))
+if __name__ == '__main__':
+    graph = Graph('graph.txt')
+    print(dijkstras_algo(graph, 'A'))
 
 
 # {
