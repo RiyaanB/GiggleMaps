@@ -119,7 +119,7 @@ def dijkstra(graph, start, end):
 		route.append(nodes[path_via]['path_via'])
 		path_via = route[-1]
 
-	return reversed(route)
+	return route[-1::]
 
 
 
