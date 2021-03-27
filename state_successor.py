@@ -1,4 +1,4 @@
-from dijkstra import Graph
+from Graph import Graph
 
 def successor(graph):
     for person in graph.people:

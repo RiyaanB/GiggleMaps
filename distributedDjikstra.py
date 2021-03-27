@@ -34,32 +34,6 @@ def main():
 			else:
 				people.remove(person)
 
-class Person:
-	
-	def __init__(self, start=None, end=None):
-		self.current_pos = None
-		
-		self.start = start
-		self.end = end
-		self.prev_pos = None
-
-		self.route_taken = [self.start]
-
-	def reached(self):
-		return self.current_pos==self.end
-
-	def move(self, pos):
-		'''
-		This method will change current position
-		of the person and will also append this 
-		new position to self.route_taken
-		'''
-
-		self.current_pos = pos
-		self.route_taken.append(self.current_pos)
-
-
-
 
 class SpecialMinHeap(Heap):
 	def greater(self, a, b):
