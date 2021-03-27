@@ -11,26 +11,27 @@ from plot_graph import plot_graph
 def google_maps(graph: Graph, everyone: list):
 	system_age = 0
 	reached = []
+	for person in everyone:
+		person.path.extend(dijkstra(graph, person.start, person.end)[1])
+		person.next_node = 1
 	while len(everyone) != 0:
 		system_age += 1
 		for person in everyone:
 			if not person.reached():
-				if person.current_pos == person.start:
-					person.path.extend(dijkstra(graph, person.start, person.end)[1])
-					person.next_node = person.path[1]
 				person.age += 1
 				if person.limbo == 0:
-					graph.update_cost(person.current_pos, person.next_node, 1)
-					person.limbo = graph.edges[person.current_pos][person.next_node]
+					graph.update_cost(person.path[person.current_pos], person.path[person.next_node], 1)
+					person.limbo = graph.edges[person.path[person.current_pos]][person.path[person.next_node]]
+					person.current_pos = person.next_node
 
 				person.limbo -= 1
 				if person.limbo == 0:
-					graph.update_cost(person.current_pos, person.next_node, -1)
-					person.current_pos = person.next_node
-					person.nodes_visited.add(person.current_pos)
+					graph.update_cost(person.path[person.current_pos-1], person.path[person.current_pos], -1)
+					person.nodes_visited.add(person.path[person.current_pos])
 					if person.reached():
-						break
-					person.next_node = person.path[person.path.index(person.current_pos) + 1]
+						person.already_reached = True
+						continue
+					person.next_node += 1
 			elif person.already_reached:
 				pass
 			else:
@@ -56,20 +57,20 @@ def giggle_maps(graph: Graph, everyone: list):
 			if not person.reached():
 				person.age += 1
 				if person.limbo == 0:
-					person.path = person.path[:person.path.index(person.current_pos)+1]
-					person.path.extend(dijkstra(graph, person.current_pos, person.end)[1])
-					person.next_node = person.path[person.path.index(person.current_pos) + 1]
-					graph.update_cost(person.current_pos, person.next_node, 1)
-					person.limbo = graph.edges[person.current_pos][person.next_node]
+					person.path = person.path[:person.current_pos+1]
+					person.path.extend(dijkstra(graph, person.path[person.current_pos], person.end)[1])
+					graph.update_cost(person.path[person.current_pos], person.path[person.next_node], 1)
+					person.limbo = graph.edges[person.path[person.current_pos]][person.path[person.next_node]]
+					person.current_pos += 1
 
 				person.limbo -= 1
 				if person.limbo == 0:
-					graph.update_cost(person.current_pos, person.next_node, -1)
-					person.current_pos = person.next_node
+					graph.update_cost(person.path[person.current_pos-1], person.path[person.current_pos], -1)
 					person.nodes_visited.add(person.current_pos)
 					if person.reached():
-						break
-					person.next_node = person.path[person.path.index(person.current_pos) + 1]
+						person.already_reached = True
+						continue
+					person.next_node += 1
 			elif person.already_reached:
 				pass
 			else:
@@ -190,7 +191,7 @@ if __name__ == '__main__':
 		people = [Person(row[0], row[1], row[2]) for row in csv.reader(f)]
 
 	start = time.time()
-	print(google_maps(graph, people))
+	print(giggle_maps(graph, people))
 	end = time.time()
 
 	print(end - start)

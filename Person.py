@@ -3,12 +3,12 @@ class Person:
         self.name = name
         self.start = start_node
         self.end = end_node
-        self.current_pos = self.start
+        self.current_pos = 0
         self.nodes_visited = set()
         self.nodes_visited.add(start_node)
         self.prev_pos = start_node
         self.path = [self.start]
-        self.next_node = ""
+        self.next_node = 1
         self.already_reached = False
         self.age = 0
         self.limbo = 0
@@ -21,7 +21,7 @@ class Person:
         return self.path.pop(0) if self.path else ""
 
     def reached(self):
-        return self.current_pos == self.end
+        return self.path[self.current_pos] == self.end
 
     def move(self, pos):
         '''
