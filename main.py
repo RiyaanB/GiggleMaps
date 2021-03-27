@@ -5,7 +5,7 @@ from Graph import Graph
 
 B = Graph('graph.txt')
 print(B.array)
-G = nx.from_numpy_array(B.array)
+G = nx.from_numpy_array(B.array, parallel_edges=True, create_using=nx.DiGraph)
 labels = {}
 nodes = list(G.nodes())
 for i in range(len(nodes)):
