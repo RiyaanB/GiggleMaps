@@ -5,14 +5,14 @@ class Heap:
 	def print_heap(self):
 		print(self.m_heap)
 
-	def insert(self, n):
+	def push(self, n):
 		pos = len(self.m_heap)
 		self.m_heap.append(n)
 		while (pos != 0 and self.comp(pos, (pos-1)//2)):
 			self.swap(pos, (pos-1)//2)
 			pos = (pos-1)//2
 
-	def extract(self):
+	def pop(self):
 		length = len(self.m_heap)
 		if length == 0:
 			return None
@@ -62,10 +62,11 @@ class MinHeap(Heap):
 		return a if self.m_heap[a] < self.m_heap[b] else b
 
 
+
 if __name__ == '__main__':
 	a = MinHeap()
 	b = [17,80,35,41,70,56,75,58,57,53,88,46,12,10,69,84,86,37,67,40,]
 	for i in b:
-		a.insert(i)
-	c = [a.extract() for i in range(20)]
+		a.push(i)
+	c = [a.pop() for i in range(20)]
 	print(c)
