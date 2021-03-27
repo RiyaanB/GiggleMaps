@@ -83,8 +83,10 @@ def dijkstra(graph, start, end):
 
 	raise RuntimeError('End point not found')
 
+
 if __name__ == '__main__':
 	main()
+
 
 '''
 {
