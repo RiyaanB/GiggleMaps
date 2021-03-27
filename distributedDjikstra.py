@@ -12,7 +12,7 @@ def main():
 
 	people = 3
 
-	with open('people_start_end_same.txt') as f:
+	with open('start_end.txt') as f:
 		people = [Person(row[0], row[1]) for row in csv.reader(f)]
 
 	while people:

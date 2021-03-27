@@ -17,8 +17,8 @@ class Graph:
 				self.nodes.add(to_node)
 
 
-def dijkstras_algo(graph, start):
-	dists = {node: (0 if node==start else np.inf) for node in graph.nodes}
+def dijkstras_algo(graph, start, end):
+	dists = {node: (0 if node == start else np.inf) for node in graph.nodes}
 	priority_queue = [(0, start)]
 
 	while priority_queue:
@@ -38,8 +38,7 @@ def dijkstras_algo(graph, start):
 
 
 graph = Graph('graph.txt')
-print(dijkstras_algo(graph, 'A'))
-
+print(dijkstras_algo(graph, 'A', end=None))
 
 # {
 # 'A': {'B': 1, 'C': 2, 'D': 6}, 
