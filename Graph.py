@@ -2,6 +2,7 @@ import numpy as np
 from collections import defaultdict
 from Person import Person
 
+
 class Graph:
     def __init__(self, filename):
         self.nodes = set()
