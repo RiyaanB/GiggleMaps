@@ -20,19 +20,24 @@ def main():
 		people = [Person(row[0], row[1]) for row in csv.reader(f)]
 
 	while people:
+		n=1
 		for person in people:
 			if not person.reached():
-				route = dijkstra(person.current_pos, person.end)
-				next_pos = route[0]
+				route = dijkstra(graph, person.current_pos, person.end)
+				print(person.current_pos, route[1][0])
+				print(graph.edges)
+				next_pos = route[1][0]
 				if not person.current_pos == person.start:
 					graph.update_cost(person.prev_pos, person.current_pos, value=-1) # reduces cost of the edge the person is no longer on
 
 				graph.update_cost(person.current_pos, next_pos, value=1) # increases cost of the edge on which person travels
 				person.prev_pos = person.current_pos
 				person.move(next_pos)
+				person.path.append(next_pos)
 
 			else:
 				people.remove(person)
+			n+=1
 
 
 class SpecialMinHeap(Heap):
@@ -43,7 +48,6 @@ class SpecialMinHeap(Heap):
 def dijkstra(graph, start, end):
 	'''
 	This function returns a tuple of least distance and the best path to be taken from start + 1 to end
-
 	TODO: figure out optimum way to recalculate
 			dijkstra by only recalculating wrt
 			the edge whose cost has changed
