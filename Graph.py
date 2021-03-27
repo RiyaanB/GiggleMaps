@@ -13,6 +13,8 @@ class Graph:
         with open(filename) as f:
             for line in f:
                 from_node, to_node, cost, *_ = line.strip().split(" ")
+                # from_node = int(from_node)
+                # to_node = int(to_node)
                 cost = int(cost)
                 self.edges[from_node][to_node] = cost
                 self.edges[to_node][from_node] = cost
@@ -43,3 +45,9 @@ class Graph:
             for line in f:
                 from_node, to_node, *_ = line.strip().split(" ")
                 self.people.append(Person(from_node, to_node))
+
+
+if __name__ == "__main__":
+    graph = Graph('graph.txt')
+    print(graph.nodes)
+    print(graph.array)
