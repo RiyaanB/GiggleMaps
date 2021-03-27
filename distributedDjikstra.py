@@ -17,7 +17,6 @@ def main():
 
     people = 3
 
-<<<<<<< HEAD
 	with open('start_end.txt') as f:
 		everyone = [Person(row[0], row[1]) for row in csv.reader(f)]
 
@@ -70,34 +69,6 @@ def main():
 	print(time_taken)
 	print(step)
 	print([person.path for person in everyone])
-=======
-    with open('start_end.txt') as f:
-        people = [Person(row[0], row[1]) for row in csv.reader(f)]
-
-    while people:
-        for person in people:
-            if not person.reached():
-                route = dijkstra(graph, person.current_pos, person.end)
-                next_pos = route[1][0]
-                # print(next_pos)
-                if not person.current_pos == person.start:
-                    graph.update_cost(person.prev_pos, person.current_pos, value=-1)
-                    graph.update_positions(person.prev_pos, person.current_pos, remove=True)
-                    # reduces cost of the edge the person is no longer on
-
-                graph.update_cost(person.current_pos, next_pos, value=1) # increases cost of the edge on which person travels
-                person.prev_pos = person.current_pos
-                person.move(next_pos)
-                person.path.append(next_pos)
-
-                graph.update_positions(person.prev_pos, person.current_pos)
-
-                # print(graph.people_positions)
-            else:
-                people.remove(person)
-
-            # take max people at an edge and use that for time taken
->>>>>>> d559d1591162124bd1d521dc5f7b09d884fdc9d6
 
 
 class SpecialMinHeap(Heap):
