@@ -59,7 +59,7 @@ def dijkstra(graph, start, end):
 	while True:
 		current_master_node = pq.pop()
 
-		if current_master_node['name'] == end: #issue
+		if current_master_node['name'] == end:
 			break
 
 		if current_master_node['done']:
@@ -71,8 +71,8 @@ def dijkstra(graph, start, end):
 
 				if nodes[adj_node]['distance'] > distance: # What about ==
 					nodes[adj_node]['distance'] = distance
-					nodes[adj_node]['path_via'] = current_master_node['name'] #issue
-					pq.push(nodes[adj_node]) #pass by reference, pass by value
+					nodes[adj_node]['path_via'] = current_master_node['name'] 
+					pq.push(nodes[adj_node]) 
 
 		current_master_node['done'] = True
 
@@ -83,7 +83,7 @@ def dijkstra(graph, start, end):
 		route.append(nodes[path_via]['path_via'])
 		path_via = route[-1]
 
-	return (nodes[end]['distance'], route[::-1]) # need to reverse it
+	return (nodes[end]['distance'], route[::-1])
 
 
 
