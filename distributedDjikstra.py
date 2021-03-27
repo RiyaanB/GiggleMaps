@@ -6,7 +6,7 @@
 
 from collections import defaultdict
 import csv
-from heap import MinHeap
+from heap import Heap
 import numpy as np
 
 def main():
