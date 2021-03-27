@@ -12,6 +12,5 @@ A = np.matrix([[1, 1, 1, 0],
 B = Graph('graph.txt')
 print(B.array)
 G = nx.from_numpy_array(B.array)
-nx.draw(G)
-plt.show()
+
 

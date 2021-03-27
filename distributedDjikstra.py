@@ -5,16 +5,17 @@
 
 
 from collections import defaultdict
+import csv
+from heap import Heap
+import numpy as np
 
 def main():
-	graph = Graph()
+	graph = Graph('graph.txt')
 
 	people = 3
 
-	start = 'A'
-	end = 'F'
-
-	people = [Person(start, end) for i in range(people)] #Change range value to change number of ppl
+	with open('start_end.txt') as f:
+		people = [Person(row[0], row[1]) for row in csv.reader(f)]
 
 	while people:
 		for person in people:
@@ -22,10 +23,10 @@ def main():
 				route = dijkstra(person.current_pos, end)
 				next_pos = route[0]
 				if not person.current_pos==start:
-					graph.update_cost(prev_pos, person.current_pos, value=-1) # reduces cost of the edge the person is no longer on
+					graph.update_cost(person.prev_pos, person.current_pos, value=-1) # reduces cost of the edge the person is no longer on
 
 				graph.update_cost(person.current_pos, next_pos, value=1) # increases cost of the edge on which person travels
-				prev_pos = person.current_pos
+				person.prev_pos = person.current_pos
 				person.move(next_pos)
 
 			else:
@@ -38,6 +39,7 @@ class Person:
 		
 		self.start = start
 		self.end = end
+		self.prev_pos = None
 
 		self.route_taken = [self.start]
 
@@ -75,8 +77,12 @@ class Graph:
 		self.edges[final][initial] += value
 		pass
 
-
-def dijkstra(start, end):
+class SpecialMinHeap(Heap):
+	def greater(self, a, b):
+		return a if self.m_heap[a]['distance'] < self.m_heap[b]['distance'] else b
+	
+	
+def dijkstra(graph, start, end):
 	'''
 	This function returns an array of the best 
 	path to be taken from start to end
@@ -85,5 +91,42 @@ def dijkstra(start, end):
 			dijkstra by only recalculating wrt
 			the edge whose cost has changed
 	'''
+	
+	# TODO: write this damn function
+	nodes = {node: {'distance': (0 if node == start else np.inf), 'path_via': None, 'done': False} for node in graph.nodes}
+	
+	pq = SpecialMinHeap()
+	pq.push(nodes[start])
+	
+	while True:
+		current_master_node = pq.pull()
 
-	pass
+		if current_master_node == end:
+			break
+		if nodes[current_master_node]['done']:
+			continue
+
+		for adj_node, distance in graph.edges[start].items():
+			if not nodes[adj_node]['done']:
+				distance += current_master_node['distance']
+
+				if nodes[adj_node]['distance'] > distance: # What about ==
+					nodes[adj_node]['distance'] = distance
+					nodes[adj_node]['path_via'] = current_master_node
+					pq.push(nodes[adj_node]) #pass by reference, pass by value
+
+		nodes[current_master_node]['done'] = True
+
+	route = [end]
+	path_via = nodes[end]['path_via']
+
+	while path_via != start:
+		route.append(nodes[path_via]['path_via'])
+		path_via = route[-1]
+
+	return route[-1::]
+
+
+
+if __name__ == '__main__':
+	main()

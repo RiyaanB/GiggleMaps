@@ -52,6 +52,7 @@ class Graph:
 
 
 
+
 def dijkstras_algo(graph, start):
     dists = {node: (0 if node==start else np.inf) for node in graph.nodes}
     priority_queue = [(0, start)]
@@ -75,7 +76,6 @@ def dijkstras_algo(graph, start):
 if __name__ == '__main__':
     graph = Graph('graph.txt')
     print(dijkstras_algo(graph, 'A'))
-
 
 # {
 # 'A': {'B': 1, 'C': 2, 'D': 6}, 
