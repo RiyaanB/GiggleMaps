@@ -10,6 +10,7 @@ class Graph:
         self.people_positions = {}
         self.people = []
         self.names = []
+        self.time_taken = defaultdict(lambda: 0)
 
         with open(filename) as f:
             for line in f:
