@@ -42,7 +42,7 @@ class SpecialMinHeap(Heap):
 	
 def dijkstra(graph, start, end):
 	'''
-	This function returns a tuple of least distance and the best path to be taken from start to end
+	This function returns a tuple of least distance and the best path to be taken from start + 1 to end
 
 	TODO: figure out optimum way to recalculate
 			dijkstra by only recalculating wrt
@@ -82,9 +82,6 @@ def dijkstra(graph, start, end):
 		current_master_node['done'] = True
 
 	raise RuntimeError('End point not found')
-	
-
-
 
 if __name__ == '__main__':
 	main()
