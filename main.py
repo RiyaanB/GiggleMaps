@@ -3,7 +3,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from Graph import Graph
 
-B = Graph('graph.txt')
+B = Graph('graph2.txt')
 
 G = nx.to_directed(nx.to_networkx_graph(B.edges, multigraph_input=True))
 

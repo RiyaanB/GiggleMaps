@@ -20,7 +20,7 @@ def google_maps(graph: Graph, everyone: list):
 					person.next_node = person.path[1]
 				person.age += 1
 				if person.limbo == 0:
-					graph.update_cost(person.current_pos, person.next_node)
+					graph.update_cost(person.current_pos, person.next_node, 1)
 					person.limbo = graph.edges[person.current_pos][person.next_node]
 
 				person.limbo -= 1
@@ -28,6 +28,8 @@ def google_maps(graph: Graph, everyone: list):
 					graph.update_cost(person.current_pos, person.next_node, -1)
 					person.current_pos = person.next_node
 					person.nodes_visited.add(person.current_pos)
+					if person.reached():
+						break
 					person.next_node = person.path[person.path.index(person.current_pos) + 1]
 			elif person.already_reached:
 				pass
@@ -40,6 +42,46 @@ def google_maps(graph: Graph, everyone: list):
 	user_sum_age = 0
 	for person in reached:
 		user_sum_age += person.age
+		print(person.path)
+	return (system_age, user_sum_age)
+
+
+def giggle_maps(graph: Graph, everyone: list):
+
+	system_age = 0
+	reached = []
+	while len(everyone) != 0:
+		system_age += 1
+		for person in everyone:
+			if not person.reached():
+				person.age += 1
+				if person.limbo == 0:
+					person.path = person.path[:person.path.index(person.current_pos)+1]
+					person.path.extend(dijkstra(graph, person.current_pos, person.end)[1])
+					person.next_node = person.path[person.path.index(person.current_pos) + 1]
+					graph.update_cost(person.current_pos, person.next_node, 1)
+					person.limbo = graph.edges[person.current_pos][person.next_node]
+
+				person.limbo -= 1
+				if person.limbo == 0:
+					graph.update_cost(person.current_pos, person.next_node, -1)
+					person.current_pos = person.next_node
+					person.nodes_visited.add(person.current_pos)
+					if person.reached():
+						break
+					person.next_node = person.path[person.path.index(person.current_pos) + 1]
+			elif person.already_reached:
+				pass
+			else:
+				person.already_reached = True
+				person.age += 1
+				reached.append(person)
+				everyone.remove(person)
+
+	user_sum_age = 0
+	for person in reached:
+		user_sum_age += person.age
+		print(person.path)
 	return (system_age, user_sum_age)
 
 
