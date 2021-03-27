@@ -58,24 +58,6 @@ class Person:
 
 
 
-class Graph:
-	def __init__(self, filename):
-		self.nodes = set()
-		self.edges = defaultdict(dict)
-
-		with open(filename) as f:
-			for line in f:
-				from_node, to_node, cost, *_ = line.strip().split(" ")
-				cost = int(cost)
-				self.edges[from_node][to_node] = cost
-				self.edges[to_node][from_node] = cost
-				self.nodes.add(from_node)
-				self.nodes.add(to_node)
-
-	def update_cost(self, initial, final, value=1):
-		self.edges[initial][final] += value
-		self.edges[final][initial] += value
-		pass
 
 class SpecialMinHeap(Heap):
 	def greater(self, a, b):
@@ -99,7 +81,7 @@ def dijkstra(graph, start, end):
 	pq.push(nodes[start])
 	
 	while True:
-		current_master_node = pq.pull()
+		current_master_node = pq.pop()
 
 		if current_master_node == end:
 			break

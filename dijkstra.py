@@ -32,24 +32,6 @@ class Graph:
                 self.nodes.add(from_node)
                 self.nodes.add(to_node)
 
-        self.names = sorted(self.nodes)
-        array = []
-        for from_node, to_node in sorted(self.edges.items()):
-            row = []
-            for name in self.names:
-                try:
-                    row.append(to_node[name])
-                except KeyError:
-                    row.append(0)
-            array.append(row)
-        self.array = np.array(array)
-
-        self.people = []
-        with open(people_filename) as f:
-            for line in f:
-                from_node, to_node, *_ = line.strip().split(" ")
-                self.people.append(Person(from_node, to_node))
-
 
 
 
