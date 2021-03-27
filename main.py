@@ -3,16 +3,14 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from Graph import Graph
 
-
-A = np.matrix([[1, 1, 1, 0],
-               [1, 2, 1, 0],
-               [1, 2, 3, 0],
-               [1, 0, 0, 4],
-               ])
 B = Graph('graph.txt')
 print(B.array)
-G = nx.from_numpy_array(B.array)
-nx.draw(G)
+G = nx.from_numpy_array(B.array, parallel_edges=True, create_using=nx.DiGraph)
+labels = {}
+nodes = list(G.nodes())
+for i in range(len(nodes)):
+    labels[nodes[i]] = B.names[i]
+nx.draw(G, labels=labels, with_labels=True)
 plt.show()
 
 
