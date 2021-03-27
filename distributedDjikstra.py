@@ -84,8 +84,7 @@ class SpecialMinHeap(Heap):
 	
 def dijkstra(graph, start, end):
 	'''
-	This function returns an array of the best 
-	path to be taken from start to end
+	This function returns a tuple of least distance and the best path to be taken from start to end
 
 	TODO: figure out optimum way to recalculate
 			dijkstra by only recalculating wrt
@@ -124,7 +123,7 @@ def dijkstra(graph, start, end):
 		route.append(nodes[path_via]['path_via'])
 		path_via = route[-1]
 
-	return route[-1::]
+	return (nodes[end]['distance'], route[-1::])
 
 
 
