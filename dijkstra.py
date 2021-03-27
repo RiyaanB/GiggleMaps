@@ -55,6 +55,54 @@ def dijkstras_algo(graph, start):
 
     return dists
 
+def main(graph: Graph, people: list):
+
+	time_taken = 0
+	tot=0
+
+	while tot<len(people):
+
+		graph.time_taken = defaultdict(lambda: 0)
+
+		for idx in range(len(people)):
+			person = people[idx]
+			if not person.reached():
+
+				route = dijkstra(graph, person.current_pos, person.end)
+				next_pos = route[1][0]
+
+				graph.update_positions(person.current_pos, next_pos, remove=True)
+				person.path.append(next_pos)
+
+				if not person.current_pos == person.start:
+					graph.update_cost(person.prev_pos, person.current_pos, value=-1) # reduces cost of the edge the person is no longer on
+
+				graph.update_cost(person.current_pos, next_pos, value=1) # increases cost of the edge on which person travels
+				person.prev_pos = person.current_pos
+
+				person.move(next_pos)
+
+				graph.time_taken[(person.prev_pos, person.current_pos)] += 1
+
+				# print(person.path[-2:])
+
+			elif person.already_reached:
+				pass
+
+			else:
+				# print(f"PERSON {person.name} REACHED, PATH:", person.path)
+				person.already_reached = True
+				tot+=1
+
+		try:
+			time = max(graph.time_taken.values())
+			time_taken += time
+		except ValueError:
+			pass
+
+	return time_taken, [person.path for person in people]
+
+
 
 if __name__ == '__main__':
     graph = Graph('graph.txt')

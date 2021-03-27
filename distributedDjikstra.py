@@ -6,6 +6,46 @@ from Graph import Graph
 from Person import Person
 import time
 from plot_graph import plot_graph
+from main import draw
+
+def simulator(graph: Graph, everyone: list):
+	system_age = 0
+	for i in everyone:
+		i.age = 0
+		i.limbo = 0
+		i.current_pos = 0
+		i.next_node = 0
+		i.already_reached = False
+	reached = []
+	while len(everyone) != 0:
+		system_age += 1
+		for person in everyone:
+			if not person.reached():
+				person.age += 1
+				if person.limbo == 0:
+					graph.update_cost(person.path[person.current_pos], person.path[person.current_pos+1], 1)
+					person.limbo = graph.edges[person.path[person.current_pos]][person.path[person.current_pos+1]]
+					person.current_pos += 1
+
+				person.limbo -= 1
+				if person.limbo == 0:
+					graph.update_cost(person.path[person.current_pos-1], person.path[person.current_pos], -1)
+					if person.reached():
+						person.already_reached = True
+						continue
+			elif person.already_reached:
+				pass
+			else:
+				person.already_reached = True
+				person.age += 1
+				reached.append(person)
+				everyone.remove(person)
+
+	user_sum_age = 0
+	for person in reached:
+		user_sum_age += person.age
+		print(person.path)
+	return (system_age, user_sum_age)
 
 
 def google_maps(graph: Graph, everyone: list):
@@ -16,6 +56,7 @@ def google_maps(graph: Graph, everyone: list):
 		person.next_node = 1
 	while len(everyone) != 0:
 		system_age += 1
+
 		for person in everyone:
 			if not person.reached():
 				person.age += 1
@@ -40,11 +81,7 @@ def google_maps(graph: Graph, everyone: list):
 				reached.append(person)
 				everyone.remove(person)
 
-	user_sum_age = 0
-	for person in reached:
-		user_sum_age += person.age
-		print(person.path)
-	return (system_age, user_sum_age)
+	return reached
 
 
 def giggle_maps(graph: Graph, everyone: list):
@@ -79,59 +116,7 @@ def giggle_maps(graph: Graph, everyone: list):
 				reached.append(person)
 				everyone.remove(person)
 
-	user_sum_age = 0
-	for person in reached:
-		user_sum_age += person.age
-		print(person.path)
-	return (system_age, user_sum_age)
-
-
-def main(graph: Graph, people: list):
-
-	time_taken = 0
-	tot=0
-
-	while tot<len(people):
-
-		graph.time_taken = defaultdict(lambda: 0)
-
-		for idx in range(len(people)):
-			person = people[idx]
-			if not person.reached():
-
-				route = dijkstra(graph, person.current_pos, person.end)
-				next_pos = route[1][0]
-
-				graph.update_positions(person.current_pos, next_pos, remove=True)
-				person.path.append(next_pos)
-
-				if not person.current_pos == person.start:
-					graph.update_cost(person.prev_pos, person.current_pos, value=-1) # reduces cost of the edge the person is no longer on
-
-				graph.update_cost(person.current_pos, next_pos, value=1) # increases cost of the edge on which person travels
-				person.prev_pos = person.current_pos
-
-				person.move(next_pos)
-
-				graph.time_taken[(person.prev_pos, person.current_pos)] += 1
-
-				# print(person.path[-2:])
-
-			elif person.already_reached:
-				pass
-
-			else:
-				# print(f"PERSON {person.name} REACHED, PATH:", person.path)
-				person.already_reached = True
-				tot+=1
-
-		try:
-			time = max(graph.time_taken.values())
-			time_taken += time
-		except ValueError:
-			pass
-
-	return time_taken, [person.path for person in people]
+	return reached
 
 
 class SpecialMinHeap(Heap):
@@ -183,18 +168,25 @@ def dijkstra(graph, start, end):
 
 
 if __name__ == '__main__':
-	graph = Graph('graph.txt')
-
-	people = 3
-
-	with open('start_end.txt') as f:
+	graph = Graph('graph3.txt')
+	graph2 = Graph('graph3.txt')
+	with open('test_people.txt') as f:
 		people = [Person(row[0], row[1], row[2]) for row in csv.reader(f)]
 
-	start = time.time()
-	print(giggle_maps(graph, people))
-	end = time.time()
+	with open('test_people.txt') as g:
+		people2 = [Person(row[0], row[1], row[2]) for row in csv.reader(g)]
 
+	start = time.time()
+	print(simulator(graph, giggle_maps(graph2, people2)))
+	end = time.time()
 	print(end - start)
+
+	start = time.time()
+	print(simulator(graph, google_maps(graph, people)))
+	end = time.time()
+	print(end - start)
+
+
 '''
 {
 '1': {'2': 1, '5': 1, '6': 1}, 

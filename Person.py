@@ -6,7 +6,6 @@ class Person:
         self.current_pos = 0
         self.nodes_visited = set()
         self.nodes_visited.add(start_node)
-        self.prev_pos = start_node
         self.path = [self.start]
         self.next_node = 1
         self.already_reached = False
