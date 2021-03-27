@@ -24,6 +24,7 @@ def main():
 			if not person.reached():
 				route = dijkstra(graph, person.current_pos, person.end)
 				next_pos = route[1][0]
+				print(graph.edges)
 				# print(next_pos)
 				if not person.current_pos == person.start:
 					graph.update_cost(person.prev_pos, person.current_pos, value=-1)
@@ -73,7 +74,7 @@ def dijkstra(graph, start, end):
 				route.append(nodes[path_via]['path_via'])
 				path_via = route[-1]
 
-			return (nodes[end]['distance'], route[1::-1])
+			return (nodes[end]['distance'], route[-2::-1])
 
 		if current_master_node['done']:
 			continue
@@ -106,4 +107,14 @@ if __name__ == '__main__':
 '6': {'1': 1, '3': 1, '5': 1}, 
 '7': {'2': 1, '4': 1}
 }
+'''
+
+'''
+{'1': {'2': 3, '5': 1, '6': 3},
+'2': {'1': 3, '3': 1, '4': 1, '7': 1}, 
+'3': {'2': 1, '4': 1, '6': 1}, 
+'4': {'3': 1, '5': 1, '2': 1, '7': 1}, 
+'5': {'4': 1, '1': 1, '6': 1}, 
+'6': {'1': 3, '3': 1, '5': 1}, 
+'7': {'2': 1, '4': 1}}
 '''
