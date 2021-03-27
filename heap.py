@@ -2,6 +2,12 @@ class Heap:
 	def __init__(self):
 		self.m_heap = []
 
+	def empty(self):
+		return len(self.m_heap) == 0
+
+	def size(self):
+		return len(self.m_heap)
+
 	def print_heap(self):
 		print(self.m_heap)
 
