@@ -25,19 +25,20 @@ def simulator(graph: Graph, everyone: list):
 				if person.limbo == 0:
 					graph.update_cost(person.path[person.current_pos], person.path[person.current_pos+1], 1)
 					person.limbo = graph.edges[person.path[person.current_pos]][person.path[person.current_pos+1]]
-					person.current_pos += 1
+
 
 				person.limbo -= 1
 				if person.limbo == 0:
-					graph.update_cost(person.path[person.current_pos-1], person.path[person.current_pos], -1)
+					graph.update_cost(person.path[person.current_pos], person.path[person.current_pos+1], -1)
+					person.current_pos += 1
 					if person.reached():
-						person.already_reached = True
+						reached.append(person)
+						everyone.remove(person)
 						continue
 			elif person.already_reached:
 				pass
 			else:
 				person.already_reached = True
-				person.age += 1
 				reached.append(person)
 				everyone.remove(person)
 
