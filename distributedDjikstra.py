@@ -11,6 +11,7 @@ import numpy as np
 from Graph import Graph
 from Person import Person
 import time
+from plot_graph import plot_graph
 
 def main():
 	graph = Graph('graph.txt')
@@ -18,41 +19,46 @@ def main():
 	people = 3
 
 	with open('start_end.txt') as f:
-		everyone = [Person(row[0], row[1]) for row in csv.reader(f)]
+		everyone = [Person(row[0], row[1], row[2]) for row in csv.reader(f)]
 
 	people = everyone.copy()
-	step = 0
 	time_taken = 0
+	reached = []
+	tot=0
 
-	while people:
+	while tot<len(people):
+
 		graph.time_taken = defaultdict(lambda: 0)
-		for person in people:
+
+		for idx in range(len(people)):
+			person = people[idx]
 			if not person.reached():
-				if person.current_pos == person.start:
-					person.path.append(person.current_pos)
+				
 				route = dijkstra(graph, person.current_pos, person.end)
 				next_pos = route[1][0]
+
 				graph.update_positions(person.current_pos, next_pos, remove=True)
 				person.path.append(next_pos)
 
-				# print(next_pos)
 				if not person.current_pos == person.start:
-					graph.update_cost(person.prev_pos, person.current_pos, value=-1)
-				
-				print(person.path[-2:])
- 					# reduces cost of the edge the person is no longer on
+					graph.update_cost(person.prev_pos, person.current_pos, value=-1) # reduces cost of the edge the person is no longer on
 
 				graph.update_cost(person.current_pos, next_pos, value=1) # increases cost of the edge on which person travels
 				person.prev_pos = person.current_pos
+				
 				person.move(next_pos)
-				# graph.update_positions(person.prev_pos, person.current_pos)
+
 				graph.time_taken[(person.prev_pos, person.current_pos)] += 1
 
-				if person.reached():
-					print("REACHED")
-					print("REMOVING PERSON")
-					people.remove(person)
-					print(len(people))
+				print(person.path[-2:])
+
+			elif person.already_reached:
+				pass
+			else:
+				print(f"PERSON {person.name} REACHED, PATH:", person.path)
+				reached.append(person)
+				person.already_reached = True
+				tot+=1	
 
 		try:
 			print(graph.time_taken.values())
@@ -63,11 +69,11 @@ def main():
 			pass
 
 			# take max people at an edge and use that for time taken
-		step+=1
+		
+		# plot_graph(graph)
 		# time_taken += max(graph.time_taken.values())
 	
 	print(time_taken)
-	print(step)
 	print([person.path for person in everyone])
 
 

@@ -1,13 +1,15 @@
 class Person:
-    def __init__(self, start_node, end_node):
+    def __init__(self, start_node, end_node, name):
+        self.name = name
         self.start = start_node
         self.end = end_node
         self.current_pos = self.start
         self.nodes_visited = set()
         self.nodes_visited.add(start_node)
         self.prev_pos = start_node
-        self.path = []
+        self.path = [self.start]
         self.next_node = ""
+        self.already_reached=False
 
     def set_path(self, ls):
         self.path = ls
