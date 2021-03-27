@@ -9,11 +9,13 @@ import csv
 from heap import Heap
 import numpy as np
 from Graph import Graph
-
+from Person import Person
 
 def main():
 	graph = Graph('graph.txt')
 
+	print(dijkstra(graph, '1', '4'))
+	exit()
 	people = 3
 
 	with open('start_end.txt') as f:
@@ -50,7 +52,7 @@ def dijkstra(graph, start, end):
 	'''
 	
 	# TODO: write this damn function
-	nodes = {node: {'distance': (0 if node == start else np.inf), 'path_via': None, 'done': False} for node in graph.nodes}
+	nodes = {node: {'distance': (0 if node == start else np.inf), 'path_via': None, 'done': False, 'name': node} for node in graph.nodes}
 	
 	pq = SpecialMinHeap()
 	pq.push(nodes[start])
@@ -58,32 +60,45 @@ def dijkstra(graph, start, end):
 	while True:
 		current_master_node = pq.pop()
 
-		if current_master_node == end:
+		if current_master_node['name'] == end:
 			break
-		if nodes[current_master_node]['done']:
+
+		if current_master_node['done']:
 			continue
 
-		for adj_node, distance in graph.edges[start].items():
+		for adj_node, distance in graph.edges[current_master_node['name']].items():
 			if not nodes[adj_node]['done']:
 				distance += current_master_node['distance']
 
 				if nodes[adj_node]['distance'] > distance: # What about ==
 					nodes[adj_node]['distance'] = distance
-					nodes[adj_node]['path_via'] = current_master_node
-					pq.push(nodes[adj_node]) #pass by reference, pass by value
+					nodes[adj_node]['path_via'] = current_master_node['name'] 
+					pq.push(nodes[adj_node]) 
 
-		nodes[current_master_node]['done'] = True
+		current_master_node['done'] = True
 
 	route = [end]
-	path_via = nodes[end]['path_via']
+	path_via = end
 
 	while path_via != start:
 		route.append(nodes[path_via]['path_via'])
 		path_via = route[-1]
 
-	return (nodes[end]['distance'], route[-1::])
+	return (nodes[end]['distance'], route[1::-1])
 
 
 
 if __name__ == '__main__':
 	main()
+
+'''
+{
+'1': {'2': 1, '5': 1, '6': 1}, 
+'2': {'1': 1, '3': 1, '4': 1, '7': 1}, 
+'3': {'2': 1, '4': 1, '6': 1}, 
+'4': {'3': 1, '5': 1, '2': 1, '7': 1}, 
+'5': {'4': 1, '1': 1, '6': 1}, 
+'6': {'1': 1, '3': 1, '5': 1}, 
+'7': {'2': 1, '4': 1}
+}
+'''
