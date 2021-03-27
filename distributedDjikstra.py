@@ -8,6 +8,8 @@ from collections import defaultdict
 import csv
 from heap import Heap
 import numpy as np
+from Graph import Graph
+
 
 def main():
 	graph = Graph('graph.txt')
