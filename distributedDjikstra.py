@@ -24,15 +24,24 @@ def main():
 			if not person.reached():
 				route = dijkstra(graph, person.current_pos, person.end)
 				next_pos = route[1][0]
+				print(next_pos)
 				if not person.current_pos == person.start:
-					graph.update_cost(person.prev_pos, person.current_pos, value=-1) # reduces cost of the edge the person is no longer on
+					graph.update_cost(person.prev_pos, person.current_pos, value=-1)
+					graph.update_positions(person.prev_pos, person.current_pos, remove=True)
+ 					# reduces cost of the edge the person is no longer on
 
 				graph.update_cost(person.current_pos, next_pos, value=1) # increases cost of the edge on which person travels
 				person.prev_pos = person.current_pos
 				person.move(next_pos)
+				person.path.append(next_pos)
 
+				graph.update_positions(person.prev_pos, person.current_pos)
+
+				print(graph.people_positions)
 			else:
 				people.remove(person)
+
+			# take max people at an edge and use that for time taken
 
 
 class SpecialMinHeap(Heap):

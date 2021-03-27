@@ -2,10 +2,10 @@ class Person:
     def __init__(self, start_node, end_node):
         self.start = start_node
         self.end = end_node
-        self.current_pos = start_node
+        self.current_pos = self.start
         self.nodes_visited = set()
         self.nodes_visited.add(start_node)
-        self.prev_node = start_node
+        self.prev_pos = start_node
         self.path = []
         self.next_node = ""
 
@@ -25,3 +25,5 @@ class Person:
         of the person and will also append this
         new position to self.route_taken
         '''
+        self.current_pos = pos
+        pass

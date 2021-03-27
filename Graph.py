@@ -7,17 +7,21 @@ class Graph:
     def __init__(self, filename):
         self.nodes = set()
         self.edges = defaultdict(dict)
+        self.people_positions = {}
         self.people = []
         self.names = []
 
         with open(filename) as f:
             for line in f:
                 from_node, to_node, cost, *_ = line.strip().split(" ")
-                # from_node = int(from_node)
-                # to_node = int(to_node)
                 cost = int(cost)
+
                 self.edges[from_node][to_node] = cost
                 self.edges[to_node][from_node] = cost
+
+                self.people_positions[(from_node, to_node)] = 0
+                self.people_positions[(to_node, from_node)] = 0
+
                 self.nodes.add(from_node)
                 self.nodes.add(to_node)
 
@@ -36,9 +40,19 @@ class Graph:
 
 
     def update_cost(self, initial, final, value=1):
-        self.edges[initial][final] += value
-        self.edges[final][initial] += value
+        update = value*(self.people_positions[(initial,final)])
+
+        self.edges[initial][final] += value if value > 1 else 1
+        self.edges[final][initial] += value if value > 1 else 1
         pass
+
+    def update_positions(self, initial, final, remove=False):
+        if not remove:
+            self.people_positions[(initial,final)] += 1
+            self.people_positions[(final,initial)] += 1
+        else:
+            self.people_positions[(initial,final)] -= 1
+            self.people_positions[(final,initial)] -= 1
 
     def addPeople(self, people_filename):
         with open(people_filename) as f:
