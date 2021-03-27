@@ -2,7 +2,7 @@ class Person:
     def __init__(self, start_node, end_node):
         self.start = start_node
         self.end = end_node
-        self.current_node = start_node
+        self.current_pos = start_node
         self.nodes_visited = set()
         self.nodes_visited.add(start_node)
         self.prev_node = start_node
@@ -17,7 +17,7 @@ class Person:
         return self.path.pop(0) if self.path else ""
 
     def reached(self):
-        return self.current_node == self.end
+        return self.current_pos == self.end
 
     def move(self, pos):
         '''
