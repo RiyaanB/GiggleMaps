@@ -54,11 +54,18 @@ def dijkstra(graph, start, end):
 	pq = SpecialMinHeap()
 	pq.push(nodes[start])
 	
-	while True:
+	while not pq.empty():
 		current_master_node = pq.pop()
 
 		if current_master_node['name'] == end:
-			break
+			route = [end]
+			path_via = end
+
+			while path_via != start:
+				route.append(nodes[path_via]['path_via'])
+				path_via = route[-1]
+
+			return (nodes[end]['distance'], route[1::-1])
 
 		if current_master_node['done']:
 			continue
@@ -74,14 +81,8 @@ def dijkstra(graph, start, end):
 
 		current_master_node['done'] = True
 
-	route = [end]
-	path_via = end
-
-	while path_via != start:
-		route.append(nodes[path_via]['path_via'])
-		path_via = route[-1]
-
-	return (nodes[end]['distance'], route[1::-1])
+	raise RuntimeError('End point not found')
+	
 
 
 
