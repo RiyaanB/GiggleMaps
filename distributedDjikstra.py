@@ -14,7 +14,7 @@ from Person import Person
 def main():
 	graph = Graph('graph.txt')
 
-	print(dijkstra(graph, '1', '4'))
+	print(dijkstra(graph, '1', '7'))
 	exit()
 	people = 3
 
@@ -50,8 +50,7 @@ def dijkstra(graph, start, end):
 			dijkstra by only recalculating wrt
 			the edge whose cost has changed
 	'''
-	
-	# TODO: write this damn function
+
 	nodes = {node: {'distance': (0 if node == start else np.inf), 'path_via': None, 'done': False, 'name': node} for node in graph.nodes}
 	
 	pq = SpecialMinHeap()
