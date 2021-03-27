@@ -17,31 +17,57 @@ def main():
 	people = 3
 
 	with open('start_end.txt') as f:
-		people = [Person(row[0], row[1]) for row in csv.reader(f)]
+		everyone = [Person(row[0], row[1]) for row in csv.reader(f)]
+
+	people = everyone.copy()
+	step = 0
+	time_taken = 0
 
 	while people:
+		graph.time_taken = defaultdict(lambda: 0)
 		for person in people:
 			if not person.reached():
+				if person.current_pos == person.start:
+					person.path.append(person.current_pos)
 				route = dijkstra(graph, person.current_pos, person.end)
 				next_pos = route[1][0]
+				graph.update_positions(person.current_pos, next_pos, remove=True)
+				person.path.append(next_pos)
+
 				# print(next_pos)
 				if not person.current_pos == person.start:
 					graph.update_cost(person.prev_pos, person.current_pos, value=-1)
-					graph.update_positions(person.prev_pos, person.current_pos, remove=True)
+				
+				print(person.path[-2:])
  					# reduces cost of the edge the person is no longer on
 
 				graph.update_cost(person.current_pos, next_pos, value=1) # increases cost of the edge on which person travels
 				person.prev_pos = person.current_pos
 				person.move(next_pos)
-				person.path.append(next_pos)
+				# graph.update_positions(person.prev_pos, person.current_pos)
+				graph.time_taken[(person.prev_pos, person.current_pos)] += 1
 
-				graph.update_positions(person.prev_pos, person.current_pos)
+				if person.reached():
+					print("REACHED")
+					print("REMOVING PERSON")
+					people.remove(person)
+					print(len(people))
 
-				# print(graph.people_positions)
-			else:
-				people.remove(person)
+		try:
+			print(graph.time_taken.values())
+			time = max(graph.time_taken.values())
+			print(f"Time Taken: {time}\n----------")
+			time_taken += time
+		except:
+			pass
 
 			# take max people at an edge and use that for time taken
+		step+=1
+		# time_taken += max(graph.time_taken.values())
+	
+	print(time_taken)
+	print(step)
+	print([person.path for person in everyone])
 
 
 class SpecialMinHeap(Heap):
