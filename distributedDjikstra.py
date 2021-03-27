@@ -9,11 +9,12 @@ import csv
 from heap import Heap
 import numpy as np
 from Graph import Graph
+from Person import Person
 
 def main():
 	graph = Graph('graph.txt')
 
-	print(dijkstra(graph, '1', '7'))
+	print(dijkstra(graph, '1', '4'))
 	exit()
 	people = 3
 
@@ -83,7 +84,7 @@ def dijkstra(graph, start, end):
 		route.append(nodes[path_via]['path_via'])
 		path_via = route[-1]
 
-	return (nodes[end]['distance'], route[::-1])
+	return (nodes[end]['distance'], route[1::-1])
 
 
 
