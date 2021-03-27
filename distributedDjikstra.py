@@ -1,9 +1,3 @@
-# PSEUDOCODE:
-
-# TODO: Consider dividing each edge into a bunch of sub graphs
-# 	to accommodate for multiple people being on 1 road
-
-
 from collections import defaultdict
 import csv
 from heap import Heap
@@ -12,6 +6,7 @@ from Graph import Graph
 from Person import Person
 import time
 from plot_graph import plot_graph
+
 
 def google_maps(filename, people_name):
 	graph = Graph(filename)
@@ -52,17 +47,9 @@ def google_maps(filename, people_name):
 	return (system_age, user_sum_age)
 
 
-def main():
-	graph = Graph('graph.txt')
+def main(graph: Graph, people: list):
 
-	people = 3
-
-	with open('start_end.txt') as f:
-		everyone = [Person(row[0], row[1], row[2]) for row in csv.reader(f)]
-
-	people = everyone.copy()
 	time_taken = 0
-	reached = []
 	tot=0
 
 	while tot<len(people):
@@ -89,31 +76,23 @@ def main():
 
 				graph.time_taken[(person.prev_pos, person.current_pos)] += 1
 
-				print(person.path[-2:])
+				# print(person.path[-2:])
 
 			elif person.already_reached:
 				pass
+
 			else:
-				print(f"PERSON {person.name} REACHED, PATH:", person.path)
-				reached.append(person)
+				# print(f"PERSON {person.name} REACHED, PATH:", person.path)
 				person.already_reached = True
 				tot+=1
 
 		try:
-			print(graph.time_taken.values())
 			time = max(graph.time_taken.values())
-			print(f"Time Taken: {time}\n----------")
 			time_taken += time
-		except:
+		except ValueError:
 			pass
 
-			# take max people at an edge and use that for time taken
-
-		# plot_graph(graph)
-		# time_taken += max(graph.time_taken.values())
-
-	print(time_taken)
-	print([person.path for person in everyone])
+	return time_taken, [person.path for person in people]
 
 
 class SpecialMinHeap(Heap):
@@ -165,11 +144,18 @@ def dijkstra(graph, start, end):
 
 
 if __name__ == '__main__':
-	start = time.time()
-	main()
-	end = time.time()
-	print(end - start)
+	graph = Graph('graph.txt')
 
+	people = 3
+
+	with open('start_end.txt') as f:
+		people = [Person(row[0], row[1], row[2]) for row in csv.reader(f)]
+
+	start = time.time()
+	print(main(graph, people))
+	end = time.time()
+
+	print(end - start)
 '''
 {
 '1': {'2': 1, '5': 1, '6': 1}, 
@@ -191,3 +177,5 @@ if __name__ == '__main__':
 '6': {'1': 3, '3': 1, '5': 1}, 
 '7': {'2': 1, '4': 1}}
 '''
+
+
