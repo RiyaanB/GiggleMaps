@@ -96,7 +96,7 @@ def dijkstra(graph, start, end):
 	nodes = {node: {'distance': (0 if node == start else np.inf), 'path_via': None, 'done': False} for node in graph.nodes}
 	
 	pq = SpecialMinHeap()
-	pq.insert(nodes[start])
+	pq.push(nodes[start])
 	
 	while True:
 		current_master_node = pq.pull()
