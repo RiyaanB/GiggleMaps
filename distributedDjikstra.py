@@ -1,9 +1,3 @@
-# PSEUDOCODE:
-
-# TODO: Consider dividing each edge into a bunch of sub graphs
-# 	to accommodate for multiple people being on 1 road
-
-
 from collections import defaultdict
 import csv
 from heap import Heap
@@ -13,15 +7,17 @@ from Person import Person
 import time
 from plot_graph import plot_graph
 
-def main():
-	graph = Graph('graph.txt')
 
-	people = 3
+graph = Graph('graph.txt')
 
-	with open('start_end.txt') as f:
-		everyone = [Person(row[0], row[1], row[2]) for row in csv.reader(f)]
+people = 3
 
-	people = everyone.copy()
+with open('start_end.txt') as f:
+	people = [Person(row[0], row[1], row[2]) for row in csv.reader(f)]
+
+
+def main(graph: Graph, people: list):
+
 	time_taken = 0
 	reached = []
 	tot=0
