@@ -2,11 +2,13 @@ import numpy as np
 from collections import defaultdict
 from Person import Person
 
+
 class Graph:
     def __init__(self, filename):
         self.nodes = set()
         self.edges = defaultdict(dict)
         self.people = []
+        self.names = []
 
         with open(filename) as f:
             for line in f:
@@ -19,17 +21,19 @@ class Graph:
                 self.nodes.add(from_node)
                 self.nodes.add(to_node)
 
-        self.names = sorted(self.nodes)
+        self.names = [i for i in sorted(self.nodes)]
         array = []
-        for from_node, to_node in sorted(self.edges.items()):
+
+        for name in self.names:
             row = []
-            for name in self.names:
+            for name2 in self.names:
                 try:
-                    row.append(to_node[name])
+                    row.append(self.edges[name][name2])
                 except KeyError:
                     row.append(0)
             array.append(row)
         self.array = np.array(array)
+
 
     def update_cost(self, initial, final, value=1):
         self.edges[initial][final] += value

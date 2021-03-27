@@ -14,8 +14,6 @@ from Person import Person
 def main():
 	graph = Graph('graph.txt')
 
-	print(dijkstra(graph, '1', '4'))
-	exit()
 	people = 3
 
 	with open('start_end.txt') as f:
@@ -44,24 +42,30 @@ class SpecialMinHeap(Heap):
 	
 def dijkstra(graph, start, end):
 	'''
-	This function returns a tuple of least distance and the best path to be taken from start to end
+	This function returns a tuple of least distance and the best path to be taken from start + 1 to end
 
 	TODO: figure out optimum way to recalculate
 			dijkstra by only recalculating wrt
 			the edge whose cost has changed
 	'''
-	
-	# TODO: write this damn function
+
 	nodes = {node: {'distance': (0 if node == start else np.inf), 'path_via': None, 'done': False, 'name': node} for node in graph.nodes}
 	
 	pq = SpecialMinHeap()
 	pq.push(nodes[start])
 	
-	while True:
+	while not pq.empty():
 		current_master_node = pq.pop()
 
 		if current_master_node['name'] == end:
-			break
+			route = [end]
+			path_via = end
+
+			while path_via != start:
+				route.append(nodes[path_via]['path_via'])
+				path_via = route[-1]
+
+			return (nodes[end]['distance'], route[1::-1])
 
 		if current_master_node['done']:
 			continue
@@ -70,23 +74,14 @@ def dijkstra(graph, start, end):
 			if not nodes[adj_node]['done']:
 				distance += current_master_node['distance']
 
-				if nodes[adj_node]['distance'] > distance: # What about ==
+				if nodes[adj_node]['distance'] > distance:
 					nodes[adj_node]['distance'] = distance
 					nodes[adj_node]['path_via'] = current_master_node['name'] 
 					pq.push(nodes[adj_node]) 
 
 		current_master_node['done'] = True
 
-	route = [end]
-	path_via = end
-
-	while path_via != start:
-		route.append(nodes[path_via]['path_via'])
-		path_via = route[-1]
-
-	return (nodes[end]['distance'], route[1::-1])
-
-
+	raise RuntimeError('End point not found')
 
 if __name__ == '__main__':
 	main()
