@@ -43,23 +43,20 @@ class Graph:
     def update_cost(self, initial, final, value=1):
         update = value*(self.people_positions[(initial,final)])
 
-        self.edges[initial][final] += value if value > 1 else 1
-        self.edges[final][initial] += value if value > 1 else 1
+        self.edges[initial][final] += value if value > 1 else 1  #what is this ternary operator for?
         pass
 
     def update_positions(self, initial, final, remove=False):
         if not remove:
             self.people_positions[(initial,final)] += 1
-            self.people_positions[(final,initial)] += 1
         else:
             self.people_positions[(initial,final)] -= 1
-            self.people_positions[(final,initial)] -= 1
 
     def addPeople(self, people_filename):
         with open(people_filename) as f:
             for line in f:
-                from_node, to_node, *_ = line.strip().split(" ")
-                self.people.append(Person(from_node, to_node))
+                from_node, to_node, name, *_ = line.strip().split(" ")
+                self.people.append(Person(from_node, to_node, name))
 
 
 if __name__ == "__main__":

@@ -9,7 +9,9 @@ class Person:
         self.prev_pos = start_node
         self.path = [self.start]
         self.next_node = ""
-        self.already_reached=False
+        self.already_reached = False
+        self.age = 0
+        self.limbo = 0
 
     def set_path(self, ls):
         self.path = ls
