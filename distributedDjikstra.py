@@ -8,11 +8,7 @@ import time
 from plot_graph import plot_graph
 
 
-def google_maps(filename, people_name):
-	graph = Graph(filename)
-	with open('start_end.txt') as f:
-		everyone = [Person(row[0], row[1], row[2]) for row in csv.reader(f)]
-
+def google_maps(graph: Graph, everyone: list):
 	system_age = 0
 	reached = []
 	while len(everyone) != 0:
@@ -20,16 +16,16 @@ def google_maps(filename, people_name):
 		for person in everyone:
 			if not person.reached():
 				if person.current_pos == person.start:
-					person.path = dijkstra(graph, person.start, person.end)[1]
+					person.path.extend(dijkstra(graph, person.start, person.end)[1])
 					person.next_node = person.path[1]
 				person.age += 1
 				if person.limbo == 0:
-					graph.edges[person.current_pos, person.next_node] += 1
-					person.limbo = graph.edges[person.current_pos, person.next_node]
+					graph.update_cost(person.current_pos, person.next_node)
+					person.limbo = graph.edges[person.current_pos][person.next_node]
 
 				person.limbo -= 1
 				if person.limbo == 0:
-					graph.edges[person.current_pos, person.next_node] -= 1
+					graph.update_cost(person.current_pos, person.next_node, -1)
 					person.current_pos = person.next_node
 					person.nodes_visited.add(person.current_pos)
 					person.next_node = person.path[person.path.index(person.current_pos) + 1]
@@ -152,7 +148,7 @@ if __name__ == '__main__':
 		people = [Person(row[0], row[1], row[2]) for row in csv.reader(f)]
 
 	start = time.time()
-	print(main(graph, people))
+	print(google_maps(graph, people))
 	end = time.time()
 
 	print(end - start)

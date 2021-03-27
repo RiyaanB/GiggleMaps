@@ -42,9 +42,7 @@ class Graph:
 
 
     def update_cost(self, initial, final, value=1):
-        update = value*(self.people_positions[(initial,final)])
-
-        self.edges[initial][final] += value if value > 1 else 1  #what is this ternary operator for?
+        self.edges[initial][final] += value
         pass
 
     def update_positions(self, initial, final, remove=False):
