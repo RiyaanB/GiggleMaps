@@ -13,9 +13,9 @@ from Person import Person
 import time
 
 def main():
-    graph = Graph('graph.txt')
+	graph = Graph('graph.txt')
 
-    people = 3
+	people = 3
 
 	with open('start_end.txt') as f:
 		everyone = [Person(row[0], row[1]) for row in csv.reader(f)]
