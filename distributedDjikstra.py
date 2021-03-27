@@ -24,7 +24,7 @@ def main():
 			if not person.reached():
 				route = dijkstra(graph, person.current_pos, person.end)
 				next_pos = route[1][0]
-				print(next_pos)
+				# print(next_pos)
 				if not person.current_pos == person.start:
 					graph.update_cost(person.prev_pos, person.current_pos, value=-1)
 					graph.update_positions(person.prev_pos, person.current_pos, remove=True)
@@ -37,7 +37,7 @@ def main():
 
 				graph.update_positions(person.prev_pos, person.current_pos)
 
-				print(graph.people_positions)
+				# print(graph.people_positions)
 			else:
 				people.remove(person)
 
