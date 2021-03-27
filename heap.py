@@ -1,4 +1,4 @@
-class MaxHeap:
+class Heap:
 	def __init__(self):
 		self.m_heap = []
 
@@ -11,7 +11,6 @@ class MaxHeap:
 		while (pos != 0 and self.comp(pos, (pos-1)//2)):
 			self.swap(pos, (pos-1)//2)
 			pos = (pos-1)//2
-
 
 	def extract(self):
 		length = len(self.m_heap)
@@ -58,12 +57,15 @@ class MaxHeap:
 		self.m_heap[b] = temp
 
 
-def main():
-	a = MaxHeap()
+class MinHeap(Heap):
+	def greater(self, a, b):
+		return a if self.m_heap[a] < self.m_heap[b] else b
+
+
+if __name__ == '__main__':
+	a = MinHeap()
 	b = [17,80,35,41,70,56,75,58,57,53,88,46,12,10,69,84,86,37,67,40,]
 	for i in b:
 		a.insert(i)
 	c = [a.extract() for i in range(20)]
 	print(c)
-
-main()
