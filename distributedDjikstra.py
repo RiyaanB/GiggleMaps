@@ -20,9 +20,9 @@ def main():
 	while people:
 		for person in people:
 			if not person.reached():
-				route = dijkstra(person.current_pos, person.end)
+				route = dijkstra(person.current_pos, end)
 				next_pos = route[0]
-				if not person.current_pos == person.start:
+				if not person.current_pos==start:
 					graph.update_cost(person.prev_pos, person.current_pos, value=-1) # reduces cost of the edge the person is no longer on
 
 				graph.update_cost(person.current_pos, next_pos, value=1) # increases cost of the edge on which person travels
@@ -77,6 +77,11 @@ class Graph:
 		self.edges[final][initial] += value
 		pass
 
+class SpecialMinHeap(Heap):
+	def greater(self, a, b):
+		return a if self.m_heap[a]['distance'] < self.m_heap[b]['distance'] else b
+	
+	
 def dijkstra(graph, start, end):
 	'''
 	This function returns an array of the best 
@@ -90,11 +95,11 @@ def dijkstra(graph, start, end):
 	# TODO: write this damn function
 	nodes = {node: {'distance': (0 if node == start else np.inf), 'path_via': None, 'done': False} for node in graph.nodes}
 	
-	pq = MinHeap()
+	pq = SpecialMinHeap()
 	pq.insert(nodes[start])
 	
 	while True:
-		current_master_node = pq.extract()
+		current_master_node = pq.pull()
 
 		if current_master_node == end:
 			break
@@ -108,7 +113,7 @@ def dijkstra(graph, start, end):
 				if nodes[adj_node]['distance'] > distance: # What about ==
 					nodes[adj_node]['distance'] = distance
 					nodes[adj_node]['path_via'] = current_master_node
-					pq.insert(nodes[adj_node]) #pass by reference, pass by value
+					pq.push(nodes[adj_node]) #pass by reference, pass by value
 
 		nodes[current_master_node]['done'] = True
 
