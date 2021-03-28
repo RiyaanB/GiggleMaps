@@ -40,7 +40,7 @@ def simulator(graph: Graph, everyone: list):
 	user_sum_age = 0
 	for person in reached:
 		user_sum_age += person.age
-		#print(person.path)
+		# print(person.path)
 	return system_age, user_sum_age/len(reached)
 
 
@@ -162,6 +162,7 @@ if __name__ == '__main__':
 	write_google_graph('Four Seasons Hotel, Mumbai', 'Dhirubhai Ambani International School, Mumbai')
 	a = 'google_graph_detailed.txt'
 	b = 'google_people.txt'
+
 	graph = Graph(a)
 	graph2 = Graph(a)
 	draw(graph)
