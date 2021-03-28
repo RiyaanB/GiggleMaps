@@ -14,12 +14,12 @@ def draw(graph: Graph):
     pos = nx.spring_layout(G)
     edge_labels = nx.get_edge_attributes(G, 'weight')
 
-    nx.draw(G, with_labels=True, node_color='skyblue', edge_cmap=plt.cm.Blues, pos = pos)
+    nx.draw(G, with_labels=False, node_color='skyblue', edge_cmap=plt.cm.Blues, pos = pos)
 
     nx.draw_networkx_edge_labels(G,pos,edge_labels=edge_labels,font_color='red',label_pos=0.2)
     plt.show()
 
 
 if __name__ == '__main__':
-    B = Graph("test_graphs/graph7.csv")
+    B = Graph("google_graph_detailed.txt")
     draw(B)
