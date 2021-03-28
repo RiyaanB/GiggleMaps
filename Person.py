@@ -22,6 +22,13 @@ class Person:
     def reached(self):
         return self.path[self.current_pos] == self.end
 
+    def reset(self):
+        self.age = 0
+        self.limbo = 0
+        self.current_pos = 0
+        self.next_node = 1
+        self.already_reached = False
+
     def move(self, pos):
         '''
         This method will change current position
