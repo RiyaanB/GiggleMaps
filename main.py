@@ -23,5 +23,5 @@ def draw(graph: Graph):
 
 
 if __name__ == '__main__':
-    B = Graph("graph2.csv")
+    B = Graph("graph5.csv")
     draw(B)
