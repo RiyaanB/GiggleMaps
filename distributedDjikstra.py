@@ -1,12 +1,11 @@
-from collections import defaultdict
 import csv
-from heap import Heap
+from utils.heap import Heap
 import numpy as np
-from Graph import Graph
-from Person import Person
+from utils.Graph import Graph
+from utils.Person import Person
 import time
-from main import draw
-from google_graph_writer import write_google_graph
+from utils.draw import draw
+from utils.google_graph_writer import write_google_graph
 
 
 def simulator(graph: Graph, everyone: list):

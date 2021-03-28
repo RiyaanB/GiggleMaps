@@ -18,13 +18,13 @@ def write_google_graph(start, end, API='AIzaSyCWmcq5BfF4LFha5ZufuEO27ixsl3OpBjs'
     modified_start = modify_coord(start)
     modified_end = modify_coord(end)
 
-    with open('google_graph.txt', 'w') as w:
+    with open('../test_graphs/google_graph.txt', 'w') as w:
         for i in range(len(times)):
             modified_fictional = modify_coord(fictional_points[i])
             w.write(','.join( [modified_start, modified_fictional, str(times[i]//60) ] ) + '\n')
             w.write(','.join( [modified_fictional, modified_end, '1' ] ) + '\n')
 
-    with open('google_graph_detailed.txt', 'w') as w:
+    with open('../test_graphs/google_graph_detailed.txt', 'w') as w:
         for i in range(len(times_detailed)):
             #print(len(times_detailed[i]))
             #print(len(routes[i]))
@@ -42,7 +42,7 @@ def write_google_graph(start, end, API='AIzaSyCWmcq5BfF4LFha5ZufuEO27ixsl3OpBjs'
             
 
 
-    with open('google_people.txt', 'w') as w:
+    with open('../test_persons/google_people.txt', 'w') as w:
         for i in range(100):
             w.write(','.join([modified_start, modified_end]) + '\n')
         

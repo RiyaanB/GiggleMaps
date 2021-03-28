@@ -1,6 +1,4 @@
-import numpy as np
 from collections import defaultdict
-from Person import Person
 import csv
 
 

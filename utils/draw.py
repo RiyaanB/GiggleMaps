@@ -1,7 +1,6 @@
-import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
-from Graph import Graph
+from utils.Graph import Graph
 
 
 def draw(graph: Graph):

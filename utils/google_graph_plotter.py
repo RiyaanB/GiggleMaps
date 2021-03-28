@@ -1,7 +1,7 @@
 from bokeh.plotting import gmap
 from bokeh.models import GMapOptions
 from bokeh.io import show
-from google_graph_writer import find_loc, get_data, get_routes
+from utils.google_graph_writer import find_loc, get_data, get_routes
 
 def plot_google_graph(start, end, API='AIzaSyCWmcq5BfF4LFha5ZufuEO27ixsl3OpBjs', directions_link="https://maps.googleapis.com/maps/api/directions/json?", zoom=12, map_type='roadmap'):
     try:

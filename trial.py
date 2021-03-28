@@ -1,10 +1,7 @@
 from distributedDjikstra import simulator, google_maps, giggle_maps
-from Graph import Graph
-from main import draw
+from utils.Graph import Graph
 import csv
-from Person import Person
-import matplotlib.pyplot as plt
-
+from utils.Person import Person
 
 print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
 
