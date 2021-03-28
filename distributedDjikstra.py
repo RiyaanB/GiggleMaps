@@ -6,6 +6,7 @@ from Graph import Graph
 from Person import Person
 import time
 from main import draw
+from google_graph_writer import write_google_graph
 
 def simulator(graph: Graph, everyone: list):
 	system_age = 0
@@ -161,8 +162,9 @@ def dijkstra(graph, start, end):
 
 
 if __name__ == '__main__':
+	write_google_graph('Ashok Gardens, Mumbai', 'Dhirubhai Ambani International School, Mumbai')
 	a = 'google_graph.txt'
-	b = 'people_start_end_same.txt'
+	b = 'google_people.txt'
 	graph = Graph(a)
 	graph2 = Graph(a)
 	draw(graph)
