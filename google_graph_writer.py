@@ -25,8 +25,8 @@ def write_google_graph(start, end, API='AIzaSyCWmcq5BfF4LFha5ZufuEO27ixsl3OpBjs'
 
     with open('google_graph_detailed.txt', 'w') as w:
         for i in range(len(times_detailed)):
-            print(len(times_detailed[i]))
-            print(len(routes[i]))
+            #print(len(times_detailed[i]))
+            #print(len(routes[i]))
             j = 0
             k = 0
             while j < len(routes[i]) - 2:

@@ -160,7 +160,7 @@ def dijkstra(graph, start, end):
 
 if __name__ == '__main__':
 	write_google_graph('Ashok Gardens, Mumbai', 'Dhirubhai Ambani International School, Mumbai')
-	a = 'google_graph.txt'
+	a = 'google_graph_detailed.txt'
 	b = 'google_people.txt'
 	graph = Graph(a)
 	graph2 = Graph(a)
