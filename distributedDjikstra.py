@@ -11,14 +11,11 @@ from main import draw
 def simulator(graph: Graph, everyone: list):
 	system_age = 0
 	for i in everyone:
-		i.age = 0
-		i.limbo = 0
-		i.current_pos = 0
-		i.next_node = 0
-		i.already_reached = False
+		i.reset()
 	reached = []
-	while len(everyone) != 0:
+	while len(reached) < len(everyone):
 		system_age += 1
+		#draw(graph)
 		for person in everyone:
 			if not person.reached():
 				person.age += 1
@@ -26,21 +23,14 @@ def simulator(graph: Graph, everyone: list):
 					graph.update_cost(person.path[person.current_pos], person.path[person.current_pos+1], 1)
 					person.limbo = graph.edges[person.path[person.current_pos]][person.path[person.current_pos+1]]
 
-
 				person.limbo -= 1
 				if person.limbo == 0:
 					graph.update_cost(person.path[person.current_pos], person.path[person.current_pos+1], -1)
 					person.current_pos += 1
 					if person.reached():
 						reached.append(person)
-						everyone.remove(person)
 						continue
-			elif person.already_reached:
-				pass
-			else:
-				person.already_reached = True
-				reached.append(person)
-				everyone.remove(person)
+
 
 	user_sum_age = 0
 	for person in reached:
@@ -55,32 +45,25 @@ def google_maps(graph: Graph, everyone: list):
 	for person in everyone:
 		person.path.extend(dijkstra(graph, person.start, person.end)[1])
 		person.next_node = 1
-	while len(everyone) != 0:
+	while len(reached) != len(everyone):
 		system_age += 1
-
 		for person in everyone:
 			if not person.reached():
 				person.age += 1
 				if person.limbo == 0:
+					person.next_node = person.current_pos + 1
 					graph.update_cost(person.path[person.current_pos], person.path[person.next_node], 1)
 					person.limbo = graph.edges[person.path[person.current_pos]][person.path[person.next_node]]
-					person.current_pos = person.next_node
 
 				person.limbo -= 1
 				if person.limbo == 0:
-					graph.update_cost(person.path[person.current_pos-1], person.path[person.current_pos], -1)
+					graph.update_cost(person.path[person.current_pos], person.path[person.current_pos+1], -1)
 					person.nodes_visited.add(person.path[person.current_pos])
+					person.current_pos += 1
 					if person.reached():
-						person.already_reached = True
+						reached.append(person)
 						continue
 					person.next_node += 1
-			elif person.already_reached:
-				pass
-			else:
-				person.already_reached = True
-				person.age += 1
-				reached.append(person)
-				everyone.remove(person)
 
 	return reached
 
@@ -89,7 +72,7 @@ def giggle_maps(graph: Graph, everyone: list):
 
 	system_age = 0
 	reached = []
-	while len(everyone) != 0:
+	while len(reached) != len(everyone):
 		system_age += 1
 		for person in everyone:
 			if not person.reached():
@@ -97,25 +80,18 @@ def giggle_maps(graph: Graph, everyone: list):
 				if person.limbo == 0:
 					person.path = person.path[:person.current_pos+1]
 					person.path.extend(dijkstra(graph, person.path[person.current_pos], person.end)[1])
+					person.next_node = person.current_pos + 1
 					graph.update_cost(person.path[person.current_pos], person.path[person.next_node], 1)
 					person.limbo = graph.edges[person.path[person.current_pos]][person.path[person.next_node]]
-					person.current_pos += 1
 
 				person.limbo -= 1
 				if person.limbo == 0:
-					graph.update_cost(person.path[person.current_pos-1], person.path[person.current_pos], -1)
-					person.nodes_visited.add(person.current_pos)
+					graph.update_cost(person.path[person.current_pos], person.path[person.next_node], -1)
+					person.current_pos += 1
+					person.nodes_visited.add(person.path[person.current_pos])
 					if person.reached():
-						person.already_reached = True
+						reached.append(person)
 						continue
-					person.next_node += 1
-			elif person.already_reached:
-				pass
-			else:
-				person.already_reached = True
-				person.age += 1
-				reached.append(person)
-				everyone.remove(person)
 
 	return reached
 
@@ -169,16 +145,19 @@ def dijkstra(graph, start, end):
 
 
 if __name__ == '__main__':
-	graph = Graph('graph3.txt')
-	graph2 = Graph('graph3.txt')
-	with open('test_people.txt') as f:
+	a = 'graph2.txt'
+	b = 'people_start_end_same.txt'
+	graph = Graph(a)
+	graph2 = Graph(a)
+	draw(graph)
+	with open(b) as f:
 		people = [Person(row[0], row[1], row[2]) for row in csv.reader(f)]
 
-	with open('test_people.txt') as g:
+	with open(b) as g:
 		people2 = [Person(row[0], row[1], row[2]) for row in csv.reader(g)]
 
 	start = time.time()
-	print(simulator(graph, giggle_maps(graph2, people2)))
+	print(simulator(graph2, giggle_maps(graph2, people2)))
 	end = time.time()
 	print(end - start)
 
