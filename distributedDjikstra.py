@@ -40,7 +40,7 @@ def simulator(graph: Graph, everyone: list):
 	user_sum_age = 0
 	for person in reached:
 		user_sum_age += person.age
-		print(person.path)
+		# print(person.path)
 	return system_age, user_sum_age/len(reached)
 
 
