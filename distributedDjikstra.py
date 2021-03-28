@@ -8,6 +8,7 @@ import time
 from main import draw
 from google_graph_writer import write_google_graph
 
+
 def simulator(graph: Graph, everyone: list):
 	system_age = 0
 	for i in everyone:
@@ -40,7 +41,7 @@ def simulator(graph: Graph, everyone: list):
 	for person in reached:
 		user_sum_age += person.age
 		#print(person.path)
-	return (system_age, user_sum_age/len(reached))
+	return system_age, user_sum_age/len(reached)
 
 
 def google_maps(graph: Graph, everyone: list):
@@ -109,7 +110,6 @@ def giggle_maps(graph: Graph, everyone: list):
 	return reached
 
 
-
 class SpecialMinHeap(Heap):
 	def greater(self, a, b):
 		return a if self.m_heap[a]['distance'] < self.m_heap[b]['distance'] else b
@@ -139,7 +139,7 @@ def dijkstra(graph, start, end):
 				route.append(nodes[path_via]['path_via'])
 				path_via = route[-1]
 
-			return (nodes[end]['distance'], route[-2::-1])
+			return nodes[end]['distance'], route[-2::-1]
 
 		if current_master_node['done']:
 			continue
@@ -173,8 +173,6 @@ if __name__ == '__main__':
 			people.append(Person(row[0], row[1]))
 			people2.append(Person(row[0], row[1]))
 
-
-
 	start = time.time()
 	print(simulator(graph2, giggle_maps(graph2, people2)))
 	end = time.time()
@@ -184,28 +182,4 @@ if __name__ == '__main__':
 	print(simulator(graph, google_maps(graph, people)))
 	end = time.time()
 	print(end - start)
-
-
-'''
-{
-'1': {'2': 1, '5': 1, '6': 1}, 
-'2': {'1': 1, '3': 1, '4': 1, '7': 1}, 
-'3': {'2': 1, '4': 1, '6': 1}, 
-'4': {'3': 1, '5': 1, '2': 1, '7': 1}, 
-'5': {'4': 1, '1': 1, '6': 1}, 
-'6': {'1': 1, '3': 1, '5': 1}, 
-'7': {'2': 1, '4': 1}
-}
-'''
-
-'''
-{'1': {'2': 3, '5': 1, '6': 3},
-'2': {'1': 3, '3': 1, '4': 1, '7': 1}, 
-'3': {'2': 1, '4': 1, '6': 1}, 
-'4': {'3': 1, '5': 1, '2': 1, '7': 1}, 
-'5': {'4': 1, '1': 1, '6': 1}, 
-'6': {'1': 3, '3': 1, '5': 1}, 
-'7': {'2': 1, '4': 1}}
-'''
-
 
