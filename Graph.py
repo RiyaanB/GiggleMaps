@@ -1,6 +1,7 @@
 import numpy as np
 from collections import defaultdict
 from Person import Person
+import csv
 
 
 class Graph:
@@ -14,9 +15,11 @@ class Graph:
 
 
         with open(filename) as f:
-            for line in f:
-                from_node, to_node, cost, *_ = line.strip().split(" ")
-                cost = int(cost)
+            data = csv.reader(f)
+            for line in data:
+                from_node = line[0]
+                to_node = line[1]
+                cost = int(line[2])
 
                 self.edges[from_node][to_node] = cost
                 self.edges[to_node][from_node] = cost
@@ -68,6 +71,6 @@ class Graph:
 
 
 if __name__ == "__main__":
-    graph = Graph('graph.txt')
+    graph = Graph('graph.csv')
     print(graph.nodes)
     print(graph.array)

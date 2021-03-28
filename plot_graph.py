@@ -3,7 +3,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from Graph import Graph
 
-B = Graph('graph.txt')
+B = Graph('graph.csv')
 
 def plot_graph(B, show=True, save=False):
 

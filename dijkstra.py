@@ -105,7 +105,7 @@ def main(graph: Graph, people: list):
 
 
 if __name__ == '__main__':
-    graph = Graph('graph.txt')
+    graph = Graph('graph.csv')
     print(dijkstras_algo(graph, 'A'))
 
 # {

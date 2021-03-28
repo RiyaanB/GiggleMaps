@@ -1,5 +1,5 @@
 class Person:
-    def __init__(self, start_node, end_node, name):
+    def __init__(self, start_node, end_node, name=""):
         self.name = name
         self.start = start_node
         self.end = end_node

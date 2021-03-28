@@ -5,7 +5,6 @@ import numpy as np
 from Graph import Graph
 from Person import Person
 import time
-from plot_graph import plot_graph
 from main import draw
 
 def simulator(graph: Graph, everyone: list):
@@ -15,7 +14,6 @@ def simulator(graph: Graph, everyone: list):
 	reached = []
 	while len(reached) < len(everyone):
 		system_age += 1
-		#draw(graph)
 		for person in everyone:
 			if not person.reached():
 				person.age += 1
@@ -29,13 +27,20 @@ def simulator(graph: Graph, everyone: list):
 					person.current_pos += 1
 					if person.reached():
 						reached.append(person)
+						person.already_reached = True
 						continue
+			elif not person.already_reached:
+				person.already_reached = True
+				reached.append(person)
+			else:
+				pass
+
 
 
 	user_sum_age = 0
 	for person in reached:
 		user_sum_age += person.age
-		print(person.path)
+		#print(person.path)/
 	return (system_age, user_sum_age)
 
 
@@ -45,7 +50,7 @@ def google_maps(graph: Graph, everyone: list):
 	for person in everyone:
 		person.path.extend(dijkstra(graph, person.start, person.end)[1])
 		person.next_node = 1
-	while len(reached) != len(everyone):
+	while len(reached) < len(everyone):
 		system_age += 1
 		for person in everyone:
 			if not person.reached():
@@ -62,9 +67,13 @@ def google_maps(graph: Graph, everyone: list):
 					person.current_pos += 1
 					if person.reached():
 						reached.append(person)
+						person.already_reached = True
 						continue
-					person.next_node += 1
-
+			elif not person.already_reached:
+				person.already_reached = True
+				reached.append(person)
+			else:
+				pass
 	return reached
 
 
@@ -72,7 +81,7 @@ def giggle_maps(graph: Graph, everyone: list):
 
 	system_age = 0
 	reached = []
-	while len(reached) != len(everyone):
+	while len(reached) < len(everyone):
 		system_age += 1
 		for person in everyone:
 			if not person.reached():
@@ -90,10 +99,17 @@ def giggle_maps(graph: Graph, everyone: list):
 					person.current_pos += 1
 					person.nodes_visited.add(person.path[person.current_pos])
 					if person.reached():
+						person.already_reached = True
 						reached.append(person)
 						continue
+			elif not person.already_reached:
+				reached.append(person)
+				person.already_reached = True
+			else:
+				pass
 
 	return reached
+
 
 
 class SpecialMinHeap(Heap):
@@ -145,16 +161,20 @@ def dijkstra(graph, start, end):
 
 
 if __name__ == '__main__':
-	a = 'graph2.txt'
-	b = 'people_start_end_same.txt'
+	a = 'graph2.csv'
+	b = 'people6.csv'
 	graph = Graph(a)
 	graph2 = Graph(a)
 	draw(graph)
-	with open(b) as f:
-		people = [Person(row[0], row[1], row[2]) for row in csv.reader(f)]
+	people = []
+	people2 = []
+	with open(b, 'r') as file:
+		reader = csv.reader(file)
+		for row in reader:
+			people.append(Person(row[0], row[1]))
+			people2.append(Person(row[0], row[1]))
 
-	with open(b) as g:
-		people2 = [Person(row[0], row[1], row[2]) for row in csv.reader(g)]
+
 
 	start = time.time()
 	print(simulator(graph2, giggle_maps(graph2, people2)))
