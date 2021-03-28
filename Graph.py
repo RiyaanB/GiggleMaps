@@ -22,11 +22,10 @@ class Graph:
                 self.nodes.add(from_node)
                 self.nodes.add(to_node)
 
-
     def update_cost(self, initial, final, value=1):
         self.edges[initial][final] += value
 
 
 if __name__ == "__main__":
-    graph = Graph('graph.csv')
+    graph = Graph('test_graphs/graph.csv')
     print(graph.nodes)

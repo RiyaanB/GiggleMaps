@@ -3,7 +3,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from Graph import Graph
 
-B = Graph('graph.csv')
+B = Graph('test_graphs/graph.csv')
 
 def plot_graph(B, show=True, save=False):
 
@@ -22,7 +22,7 @@ def plot_graph(B, show=True, save=False):
 		plt.show()
 
 	if save:
-		plt.savefig("Weighted Graph.png")
+		plt.savefig("graph_img_outputs/Weighted Graph.png")
 
 
 
