@@ -1,4 +1,5 @@
 import requests
+import numpy as np
 
 def write_google_graph(start, end, API='AIzaSyCWmcq5BfF4LFha5ZufuEO27ixsl3OpBjs', directions_link="https://maps.googleapis.com/maps/api/directions/json?"):   
     try:
@@ -34,6 +35,7 @@ def write_google_graph(start, end, API='AIzaSyCWmcq5BfF4LFha5ZufuEO27ixsl3OpBjs'
                 modified_start = modify_coord(routes[i][j])
                 modified_end = modify_coord(routes[i][j+1])
                 w.write(','.join( [modified_start, modified_end, str(times_detailed[i][k]) ]) + '\n')
+                w.write(','.join( [modified_end, modify_coord(routes[i][j+2]), str(np.random.randint(1,10)) ]) + '\n')
                 j += 2
                 k += 1
 
