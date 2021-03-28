@@ -13,7 +13,6 @@ class Graph:
         self.names = []
         self.time_taken = defaultdict(lambda: 0)
 
-
         with open(filename) as f:
             data = csv.reader(f)
             for line in data:
@@ -43,7 +42,6 @@ class Graph:
             array.append(row)
         self.array = np.array(array)
 
-
     def update_cost(self, initial, final, value=1):
         self.edges[initial][final] += value
         pass
@@ -53,21 +51,6 @@ class Graph:
             self.people_positions[(initial,final)] += 1
         else:
             self.people_positions[(initial,final)] -= 1
-
-    def add_people(self, people_filename):
-        with open(people_filename) as f:
-            for line in f:
-                from_node, to_node, name, *_ = line.strip().split(" ")
-                self.people.append(Person(from_node, to_node, name))
-
-    def add_node(self, initial, final, cost=1):
-        self.nodes.add(initial)
-        self.nodes.add(final)
-
-        self.edges[from_node][to_node] = cost
-        self.edges[to_node][from_node] = cost
-
-        pass
 
 
 if __name__ == "__main__":

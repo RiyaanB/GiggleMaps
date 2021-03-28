@@ -22,7 +22,7 @@ def plot_graph(B, show=True, save=False):
 		plt.show()
 
 	if save:
-		plt.savefig("Weighted Graph.png")
+		plt.savefig("graph_img_outputs/Weighted Graph.png")
 
 
 
