@@ -3,7 +3,7 @@ from bokeh.models import GMapOptions
 from bokeh.io import show
 from google_graph_writer import find_loc, get_data, get_routes
 
-def plot_google_graph(start, end, API='AIzaSyCWmcq5BfF4LFha5ZufuEO27ixsl3OpBjs', directions_link="https://maps.googleapis.com/maps/api/directions/json?", zoom=11, map_type='roadmap'):
+def plot_google_graph(start, end, API='AIzaSyCWmcq5BfF4LFha5ZufuEO27ixsl3OpBjs', directions_link="https://maps.googleapis.com/maps/api/directions/json?", zoom=12, map_type='roadmap'):
     try:
         start = find_loc(start, API)
         end = find_loc(end, API)
@@ -12,7 +12,7 @@ def plot_google_graph(start, end, API='AIzaSyCWmcq5BfF4LFha5ZufuEO27ixsl3OpBjs',
     except Exception:
         raise RuntimeError('Error in getting data from Google Maps')
 
-    bokeh_width, bokeh_height = 500,400
+    bokeh_width, bokeh_height = 900,800
     
     all_lats = []
     all_lngs = []
@@ -41,4 +41,4 @@ def plot_google_graph(start, end, API='AIzaSyCWmcq5BfF4LFha5ZufuEO27ixsl3OpBjs',
     return p
 
 if __name__ == '__main__':
-    plot_google_graph('Ashok Gardens, Mumbai', 'Dhirubhai Ambani International School, Mumbai')
+    plot_google_graph('Four Seasons Hotel, Mumbai', 'Dhirubhai Ambani International School, Mumbai')
