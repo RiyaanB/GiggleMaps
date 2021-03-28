@@ -161,8 +161,8 @@ def dijkstra(graph, start, end):
 
 
 if __name__ == '__main__':
-	a = 'graph5.csv'
-	b = 'people5.csv'
+	a = 'google_graph.txt'
+	b = 'people_start_end_same.txt'
 	graph = Graph(a)
 	graph2 = Graph(a)
 	draw(graph)

@@ -13,7 +13,7 @@ def write_google_graph(start, end, API='AIzaSyCWmcq5BfF4LFha5ZufuEO27ixsl3OpBjs'
     
     fictional_points = [(end[0]+i*1e-6, end[1]+i*1e-6) for i in range(1, len(times) + 1)]
 
-    with open('Google_graph.txt', 'w') as w:
+    with open('google_graph.txt', 'w') as w:
         modified_start = modify_coord(start)
         modified_end = modify_coord(end)
 
