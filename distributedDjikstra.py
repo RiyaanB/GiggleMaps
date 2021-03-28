@@ -41,7 +41,7 @@ def simulator(graph: Graph, everyone: list):
 	for person in reached:
 		user_sum_age += person.age
 		#print(person.path)/
-	return (system_age, user_sum_age)
+	return (system_age, user_sum_age/len(reached))
 
 
 def google_maps(graph: Graph, everyone: list):
