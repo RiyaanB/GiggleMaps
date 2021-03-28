@@ -13,14 +13,19 @@ def write_google_graph(start, end, API='AIzaSyCWmcq5BfF4LFha5ZufuEO27ixsl3OpBjs'
     
     fictional_points = [(end[0]+i*1e-6, end[1]+i*1e-6) for i in range(1, len(times) + 1)]
 
-    with open('google_graph.txt', 'w') as w:
-        modified_start = modify_coord(start)
-        modified_end = modify_coord(end)
+    modified_start = modify_coord(start)
+    modified_end = modify_coord(end)
 
+    with open('google_graph.txt', 'w') as w:
         for i in range(len(times)):
             modified_fictional = modify_coord(fictional_points[i])
-            w.write(','.join( [modified_start, modified_fictional, str(times[i]) ] ) + '\n')
+            w.write(','.join( [modified_start, modified_fictional, str(times[i]//60) ] ) + '\n')
             w.write(','.join( [modified_fictional, modified_end, '1' ] ) + '\n')
+
+    with open('google_people.txt', 'w') as w:
+        for i in range(100):
+            w.write(','.join([modified_start, modified_end]) + '\n')
+        
 
 def modify_coord(coords):
     coords = (str(coord) for coord in coords)
@@ -36,7 +41,7 @@ def find_loc(name, API):
     return lat, lng
 
 def get_data(start, end, API, directions_link, alternatives='false'):
-    link = directions_link + f'origin={start[0]},{start[1]}&destination={end[0]},{end[1]}&key={API}&mode=driving&alternatives={alternatives}'
+    link = directions_link + f'origin={start[0]},{start[1]}&destination={end[0]},{end[1]}&key={API}&mode=driving&alternatives={alternatives}&'
     #print(link)
     response = requests.get(link)
     resp_json_payload = response.json()
