@@ -63,8 +63,8 @@ def get_routes(resp_json_payload):
         
     return all_coords
 
-
-write_google_graph('Ashok Gardens, Mumbai', 'Dhirubhai Ambani International School, Mumbai')
+if __name__ == '__main__':
+    write_google_graph('Ashok Gardens, Mumbai', 'Dhirubhai Ambani International School, Mumbai')
 
 
 
