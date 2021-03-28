@@ -6,6 +6,7 @@ def write_google_graph(start, end, API='AIzaSyCWmcq5BfF4LFha5ZufuEO27ixsl3OpBjs'
         end = find_loc(end, API)
         data = get_data(start, end, API=API, directions_link=directions_link, alternatives='true')
         times = get_time(data)
+        times_detailed = get_time_detailed(data)
         routes = get_routes(data)
     except Exception:
         raise RuntimeError('Error in getting data from Google Maps')
@@ -21,6 +22,23 @@ def write_google_graph(start, end, API='AIzaSyCWmcq5BfF4LFha5ZufuEO27ixsl3OpBjs'
             modified_fictional = modify_coord(fictional_points[i])
             w.write(','.join( [modified_start, modified_fictional, str(times[i]//60) ] ) + '\n')
             w.write(','.join( [modified_fictional, modified_end, '1' ] ) + '\n')
+
+    with open('google_graph_detailed.txt', 'w') as w:
+        for i in range(len(times_detailed)):
+            #print(len(times_detailed[i]))
+            #print(len(routes[i]))
+            j = 0
+            k = 0
+            while j < len(routes[i]) - 2:
+            #for j in range(len(routes[i]) - 1):
+                modified_start = modify_coord(routes[i][j])
+                modified_end = modify_coord(routes[i][j+1])
+                w.write(','.join( [modified_start, modified_end, str(times_detailed[i][k]) ]) + '\n')
+                j += 2
+                k += 1
+
+            
+
 
     with open('google_people.txt', 'w') as w:
         for i in range(100):
@@ -51,6 +69,16 @@ def get_data(start, end, API, directions_link, alternatives='false'):
 def get_time(resp_json_payload):
     return [route['legs'][0]['duration']['value'] for route in resp_json_payload['routes']]
         
+def get_time_detailed(resp_json_payload):
+    total_time = []
+    for i in range(len(resp_json_payload['routes'])):
+        local_time = []
+        for dot in resp_json_payload['routes'][i]['legs'][0]['steps']:
+            local_time.append(dot['duration']['value'])
+        total_time.append(local_time)
+
+    return total_time
+    #return [[dot['duration']['value']] for route in resp_json_payload['routes'] for dot in route['legs'][0]['steps']]
 
 def get_routes(resp_json_payload):
     all_coords = []
