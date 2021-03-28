@@ -1,8 +1,6 @@
 import requests
 
-def main(start, end):
-    API = 'AIzaSyCWmcq5BfF4LFha5ZufuEO27ixsl3OpBjs'
-    directions_link = "https://maps.googleapis.com/maps/api/directions/json?"
+def write_google_graph(start, end, API='AIzaSyCWmcq5BfF4LFha5ZufuEO27ixsl3OpBjs', directions_link="https://maps.googleapis.com/maps/api/directions/json?"):   
     try:
         start = find_loc(start, API)
         end = find_loc(end, API)
@@ -66,7 +64,7 @@ def get_routes(resp_json_payload):
     return all_coords
 
 
-main('Ashok Gardens, Mumbai', 'Dhirubhai Ambani International School, Mumbai')
+write_google_graph('Ashok Gardens, Mumbai', 'Dhirubhai Ambani International School, Mumbai')
 
 
 
