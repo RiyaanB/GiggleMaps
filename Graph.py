@@ -71,6 +71,6 @@ class Graph:
 
 
 if __name__ == "__main__":
-    graph = Graph('graph.csv')
+    graph = Graph('test_graphs/graph.csv')
     print(graph.nodes)
     print(graph.array)
