@@ -36,12 +36,10 @@ def simulator(graph: Graph, everyone: list):
 			else:
 				pass
 
-
-
 	user_sum_age = 0
 	for person in reached:
 		user_sum_age += person.age
-		#print(person.path)/
+		#print(person.path)
 	return (system_age, user_sum_age/len(reached))
 
 
@@ -79,7 +77,6 @@ def google_maps(graph: Graph, everyone: list):
 
 
 def giggle_maps(graph: Graph, everyone: list):
-
 	system_age = 0
 	reached = []
 	while len(reached) < len(everyone):
