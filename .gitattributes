@@ -1,0 +1,2 @@
+*.csv linguist-detectable=false
+*.txt linguist-detectable=true
