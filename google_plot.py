@@ -3,10 +3,14 @@ import requests
 def main(start, end):
     API = 'AIzaSyCWmcq5BfF4LFha5ZufuEO27ixsl3OpBjs'
     directions_link = "https://maps.googleapis.com/maps/api/directions/json?"
+    start = find_loc(start, API)
+    end = find_loc(end, API)
     #start = find_loc(start, API)
     #end = find_loc(end, API)
 
-    get_route(start, end, API=API, directions_link=directions_link)
+    coords = get_route(start, end, API=API, directions_link=directions_link)
+    get_route(coords[3], coords[4], API=API, directions_link=directions_link)
+
 
 
 
@@ -20,11 +24,11 @@ def find_loc(name, API):
     return lat, lng
 
 
-def get_route(start, end, API, directions_link):
-    start = find_loc(start, API)
-    end = find_loc(end, API)
-    print(start, end)
-    response = requests.get(directions_link +f'origin={start[0]},{start[1]}&destination={end[0]},{end[1]}&key={API}&mode=driving')
+def get_route(start, end, API, directions_link, alternatives='false'):
+    link = directions_link + f'origin={start[0]},{start[1]}&destination={end[0]},{end[1]}&key={API}&mode=driving&alternatives={alternatives}&departure_time=now&traffic_model=pessimistic'
+    print(link)
+    response = requests.get(link)
+
     resp_json_payload = response.json()
     #print(resp_json_payload)
     coords = []
