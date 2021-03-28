@@ -4,8 +4,6 @@ import matplotlib.pyplot as plt
 from Graph import Graph
 
 
-
-
 def draw(graph: Graph):
     G = nx.DiGraph(incoming_graph_data=graph.edges)
 
