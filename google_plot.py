@@ -23,10 +23,10 @@ def find_loc(name, API):
 def get_route(start, end, API, directions_link):
     start = find_loc(start, API)
     end = find_loc(end, API)
-
+    print(start, end)
     response = requests.get(directions_link +f'origin={start[0]},{start[1]}&destination={end[0]},{end[1]}&key={API}&mode=driving')
     resp_json_payload = response.json()
-    print(resp_json_payload)
+    #print(resp_json_payload)
     coords = []
 
     for dot in resp_json_payload['routes'][0]['legs'][0]['steps']:
@@ -40,3 +40,7 @@ def get_route(start, end, API, directions_link):
     return coords
 
 main('Ashok Gardens, Mumbai', 'High Street Phoenix, Mumbai')
+
+
+
+# https://maps.googleapis.com/maps/api/directions/json?origin=18.9953464,72.848134&destination=18.994744,72.82459930000002&key=AIzaSyCWmcq5BfF4LFha5ZufuEO27ixsl3OpBjs&mode=driving
